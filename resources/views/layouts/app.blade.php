@@ -82,14 +82,13 @@
 <div class="clearfix"></div>
 
   <div class="content-wrapper">
-    <div class="container-fluid">
+       <div class="container-fluid">
+            {{-- Breeze slot --}}
+            {{ $slot ?? '' }}
 
-      <!--Start Dashboard Content-->
-
-        @yield('content')
-       <!--End Dashboard Content-->
-
-    </div>
+            {{-- Untuk halaman custom --}}
+            @yield('content')
+        </div>
     <!-- End container-fluid-->
 
     </div><!--End content-wrapper-->
