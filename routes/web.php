@@ -7,7 +7,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Redirect dashboard berdasarkan role
 Route::get('/dashboard', function () {
 
     return match (auth()->user()->role) {
@@ -23,8 +22,7 @@ Route::get('/dashboard', function () {
 // HRD
 Route::middleware(['auth', 'role:hrd'])->group(function () {
 
-    Route::view('/hrd/dashboard', 'hrd.dashboard')
-        ->name('hrd.dashboard');
+    Route::view('/hrd/dashboard', 'hrd.dashboard')->name('hrd.dashboard');
 
 });
 
@@ -32,30 +30,25 @@ Route::middleware(['auth', 'role:hrd'])->group(function () {
 // Manager
 Route::middleware(['auth', 'role:manager'])->group(function () {
 
-    Route::view('/manager/dashboard', 'manager.dashboard')
-        ->name('manager.dashboard');
+    Route::view('/manager/dashboard', 'manager.dashboard')->name('manager.dashboard');
 
 });
 
 // Karyawan
 Route::middleware(['auth', 'role:karyawan'])->group(function () {
 
-    Route::view('/employee/dashboard', 'employee.dashboard')
-        ->name('employee.dashboard');
+    Route::view('/employee/dashboard', 'employee.dashboard') ->name('employee.dashboard');
 
 });
 
 // Profile
 Route::middleware('auth')->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
 
