@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -9,7 +12,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
 
-    return match (auth()->user()->role) {
+    return match (Auth::user()->role) {
         'hrd' => redirect()->route('hrd.dashboard'),
         'manager' => redirect()->route('manager.dashboard'),
         'karyawan' => redirect()->route('employee.dashboard'),
@@ -38,6 +41,7 @@ Route::middleware(['auth', 'role:manager'])->group(function () {
 Route::middleware(['auth', 'role:karyawan'])->group(function () {
 
     Route::view('/employee/dashboard', 'employee.dashboard') ->name('employee.dashboard');
+    Route::get('/employee/cuti/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('cuti.create');
 
 });
 

@@ -5,25 +5,195 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="card mb-4">
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                <div class="card-body">
 
-                <h3 class="text-2xl font-bold mb-4">
-                    Selamat Datang, {{ auth()->user()->name }}
-                </h3>
+                    <h3>
+                        Selamat Datang,
+                        {{ auth()->user()->name }}
+                    </h3>
 
-                <p class="mb-2">
-                    Role: <span class="font-semibold">{{ auth()->user()->role }}</span>
-                </p>
+                    <p>
+                        Role :
+                        <strong>Karyawan</strong>
+                    </p>
 
-                <p>
-                    Anda login sebagai karyawan.
-                </p>
+                    <p class="mb-0">
+                        Kelola pengajuan cuti dan pantau status cuti Anda.
+                    </p>
+
+                </div>
 
             </div>
 
-        </div>
+                <div class="card mt-4">
+
+                <div class="card-header">
+                    Menu Cepat
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-3 mb-3">
+                            <a href=""
+                            {{-- {{ route('cuti.create') }} --}}
+                            class="btn btn-primary btn-block">
+                                Ajukan Cuti
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <a href=""
+                            {{-- {{ route('cuti.riwayat') }} --}}
+                            class="btn btn-success btn-block">
+                                Riwayat Cuti
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <a href=""
+                            {{-- {{ route('cuti.index') }} --}}
+                            class="btn btn-warning btn-block">
+                                Batalkan Cuti
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 mb-3">
+                            <a href=""
+                            {{-- {{ route('pengumuman.index') }} --}}
+                            class="btn btn-danger btn-block">
+                                Pengumuman
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card mt-4">
+
+    <div class="card-header">
+        Riwayat Pengajuan Cuti
     </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                    <th>Tanggal Mulai</th>
+                    <th>Tanggal Selesai</th>
+                    <th>Alasan</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {{-- @forelse($cutiSaya as $cuti)
+
+                    <tr>
+
+                        <td>
+                            {{ $cuti->tanggal_mulai }}
+                        </td>
+
+                        <td>
+                            {{ $cuti->tanggal_selesai }}
+                        </td>
+
+                        <td>
+                            {{ $cuti->alasan }}
+                        </td>
+
+                        <td>
+
+                            @if($cuti->status == 'pending')
+                                <span class="badge badge-warning">
+                                    Pending
+                                </span>
+
+                            @elseif($cuti->status == 'approved')
+                                <span class="badge badge-success">
+                                    Disetujui
+                                </span>
+
+                            @else
+                                <span class="badge badge-danger">
+                                    Ditolak
+                                </span>
+                            @endif
+
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            Belum ada pengajuan cuti
+                        </td>
+                    </tr>
+
+                @endforelse --}}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+                <div class="card mt-4">
+
+                    <div class="card-header">
+                        Pengumuman Terbaru
+                    </div>
+
+                    <div class="table-responsive">
+
+                        <table class="table">
+
+                            <thead>
+                                <tr>
+                                    <th>Judul</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                {{-- @forelse($pengumuman as $item)
+
+                                    <tr>
+                                        <td>{{ $item->judul }}</td>
+                                        <td>{{ $item->created_at->format('d M Y') }}</td>
+                                    </tr>
+
+                                @empty
+
+                                    <tr>
+                                        <td colspan="2" class="text-center">
+                                            Belum ada pengumuman
+                                        </td>
+                                    </tr>
+
+                                @endforelse --}}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
 </x-app-layout>

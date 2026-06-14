@@ -30,8 +30,18 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => 'karyawan',
         ];
     }
+        public function hrd()
+        {
+            return $this->state(fn () => ['role' => 'hrd']);
+        }
+
+        public function manager()
+        {
+            return $this->state(fn () => ['role' => 'manager']);
+        }
 
     /**
      * Indicate that the model's email address should be unverified.
