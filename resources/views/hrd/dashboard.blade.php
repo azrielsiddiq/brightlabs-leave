@@ -12,18 +12,27 @@
     <div class="container-fluid">
 
         <!-- Welcome -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <h3 class="font-weight-bold">
-                    Selamat Datang, {{ auth()->user()->name }}
-                </h3>
+               <div class="card mb-4">
 
-                <p class="mb-0">
-                    Anda login sebagai
-                    <strong>{{ auth()->user()->role }}</strong>
-                </p>
+                <div class="card-body">
+
+                    <h3>
+                        Selamat Datang,
+                        {{ auth()->user()->name }}
+                    </h3>
+
+                    <p>
+                        Role :
+                        <strong>Karyawan</strong>
+                    </p>
+
+                    <p class="mb-0">
+                        Kelola pengajuan cuti dan pantau status cuti Anda.
+                    </p>
+
+                </div>
+
             </div>
-        </div>
 
         <!-- Statistik -->
         <div class="row">
