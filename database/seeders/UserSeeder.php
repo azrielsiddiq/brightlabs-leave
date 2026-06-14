@@ -26,9 +26,11 @@ class UserSeeder extends Seeder
         ]);
 
         // Karyawan (10 orang)
-        User::factory()->count(10)->create([
-            'role' => 'karyawan',
+           User::factory()->create([
+            'name' => 'Karyawan User',
+            'email' => 'karyawan@example.com',
             'password' => bcrypt('password'),
+            'role' => 'karyawan',
         ]);
     }
 }
