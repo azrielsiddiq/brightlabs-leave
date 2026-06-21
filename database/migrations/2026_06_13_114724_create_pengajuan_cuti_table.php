@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('leave_requests', function (Blueprint $table) {
+        Schema::create('pengajuan_cuti', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('jenis_cuti', ['cuti_tahunan','cuti_sakit','cuti_penting']);
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('leave_requests');
+        Schema::dropIfExists('pengajuan_cuti');
     }
 };

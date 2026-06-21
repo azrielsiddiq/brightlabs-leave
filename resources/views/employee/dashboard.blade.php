@@ -1,199 +1,435 @@
 <x-app-layout>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('alert'))
+        <script>
+            window.onload = function() {
+                Swal.fire({
+                    icon: "{{ session('alert.type') }}",
+                    title: "{{ session('alert.title') }}",
+                    text: "{{ session('alert.message') }}",
+                    confirmButtonText: 'OK'
+                });
+            }
+        </script>
+    @endif
+
+    @php
+        $usedLeave = $totalCutiTahunan - $sisaCuti;
+        $progress = $totalCutiTahunan > 0 ? ($usedLeave / $totalCutiTahunan) * 100 : 0;
+    @endphp
+
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Dashboard Karyawan
-        </h2>
+        <div>
+            <h2 class="fw-bold mb-1" style="font-size: 22px;">
+                Dashboard Karyawan
+            </h2>
+            <p class="text-muted mb-0" style="font-size: 14px;">
+                Informasi pengajuan, sisa cuti, dan riwayat aktivitas Anda.
+            </p>
+        </div>
     </x-slot>
 
-            <div class="card mb-4">
+    <style>
+        body {
+            background: #f8fafc;
+        }
 
-                <div class="card-body">
+        .dashboard-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+        }
 
-                    <h3>
-                        Selamat Datang,
-                        {{ auth()->user()->name }}
-                    </h3>
+        .dashboard-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f172a;
+        }
 
-                    <p>
-                        Role :
-                        <strong>Karyawan</strong>
-                    </p>
+        .dashboard-subtitle {
+            font-size: 13px;
+            color: #64748b;
+        }
 
-                    <p class="mb-0">
-                        Kelola pengajuan cuti dan pantau status cuti Anda.
-                    </p>
+        .stat-box {
+            padding: 20px;
+        }
 
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            transition: .2s;
+        }
+
+        .quick-link:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .quick-icon {
+            width: 42px;
+            height: 42px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 20px;
+            background: #e2e8f0;
+        }
+
+        .progress-bar {
+            border-radius: 20px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .announcement-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .announcement-box {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            background: #f8fafc;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .announcement-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        .announcement-box.info-theme {
+            background-color: #f0fdf4;
+            border-color: #dcfce7;
+        }
+
+        .announcement-box.info-theme .announcement-icon-wrapper {
+            background-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .announcement-box.warning-theme {
+            background-color: #fffbeb;
+            border-color: #fef3c7;
+        }
+
+        .announcement-box.warning-theme .announcement-icon-wrapper {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .announcement-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .announcement-content {
+            flex-grow: 1;
+        }
+
+        .announcement-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+        }
+
+        .announcement-box.info-theme .announcement-tag { color: #166534; }
+        .announcement-box.warning-theme .announcement-tag { color: #854d0e; }
+
+        .announcement-heading {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .announcement-desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .modern-table th {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modern-table td {
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        @media(max-width:768px) {
+            .stat-value {
+                font-size: 22px;
+            }
+        }
+    </style>
+
+    <div class="container-fluid py-4 px-3 px-md-4">
+        <div class="row g-3 mb-4">
+            <div class="col-lg-8">
+                <div class="dashboard-card h-100 p-4">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                        <div>
+                            <div class="dashboard-title mb-2">
+                                Selamat datang, {{ auth()->user()->name }}
+                            </div>
+
+                            <div class="dashboard-subtitle" style="max-width: 550px;">
+                                Pantau status pengajuan cuti, kuota tahunan, dan informasi internal perusahaan melalui
+                                dashboard ini.
+                            </div>
+                        </div>
+
+                        <a href="{{ route('cuti.create') }}" class="btn btn-primary px-4">
+                            Ajukan Cuti
+                        </a>
+                    </div>
                 </div>
-
             </div>
 
-                <div class="card mt-4">
-
-                <div class="card-header">
-                    Menu Cepat
-                </div>
-
-                <div class="card-body">
-
-                    <div class="row">
-
-                        <div class="col-md-3 mb-3">
-                            <a href=""
-                            {{-- {{ route('cuti.create') }} --}}
-                            class="btn btn-primary btn-block">
-                                Ajukan Cuti
-                            </a>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100 p-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <div>
+                            <div class="dashboard-title">Penggunaan Cuti</div>
+                            <small class="text-muted">
+                                {{ $usedLeave }} / {{ $totalCutiTahunan }} Hari
+                            </small>
                         </div>
-
-                        <div class="col-md-3 mb-3">
-                            <a href=""
-                            {{-- {{ route('cuti.riwayat') }} --}}
-                            class="btn btn-success btn-block">
-                                Riwayat Cuti
-                            </a>
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <a href=""
-                            {{-- {{ route('cuti.index') }} --}}
-                            class="btn btn-warning btn-block">
-                                Batalkan Cuti
-                            </a>
-                        </div>
-
-                        <div class="col-md-3 mb-3">
-                            <a href=""
-                            {{-- {{ route('pengumuman.index') }} --}}
-                            class="btn btn-danger btn-block">
-                                Pengumuman
-                            </a>
-                        </div>
-
                     </div>
 
-                </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-primary" style="width: {{ $progress }}%">
+                        </div>
+                    </div>
 
+                    <small class="text-muted d-block mt-2">
+                        {{ round($progress) }}% digunakan
+                    </small>
+                </div>
             </div>
 
-            <div class="card mt-4">
+        </div>
 
-    <div class="card-header">
-        Riwayat Pengajuan Cuti
-    </div>
+        <div class="row g-3 mb-4">
 
-    <div class="table-responsive">
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Total Cuti Tahunan</div>
+                    <div class="stat-value">{{ $totalCutiTahunan }}</div>
+                </div>
+            </div>
 
-        <table class="table table-striped">
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Sisa Cuti</div>
+                    <div class="stat-value">{{ $sisaCuti }}</div>
+                </div>
+            </div>
 
-            <thead>
-                <tr>
-                    <th>Tanggal Mulai</th>
-                    <th>Tanggal Selesai</th>
-                    <th>Alasan</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Pending</div>
+                    <div class="stat-value">{{ $pending }}</div>
+                </div>
+            </div>
 
-            <tbody>
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Disetujui</div>
+                    <div class="stat-value">{{ $approved }}</div>
+                </div>
+            </div>
 
-                {{-- @forelse($cutiSaya as $cuti)
+        </div>
 
-                    <tr>
+        <div class="dashboard-card p-4 mb-4">
+            <div class="dashboard-title mb-3">Akses Cepat</div>
 
-                        <td>
-                            {{ $cuti->tanggal_mulai }}
-                        </td>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <a href="{{ route('cuti.create') }}" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-file-signature"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Ajukan Cuti</div>
+                            <small class="text-muted">Buat pengajuan baru</small>
+                        </div>
+                    </a>
+                </div>
 
-                        <td>
-                            {{ $cuti->tanggal_selesai }}
-                        </td>
+                <div class="col-md-4">
+                    <a href="{{ route('riwayat.cuti') }}" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Riwayat Cuti</div>
+                            <small class="text-muted">Lihat semua pengajuan</small>
+                        </div>
+                    </a>
+                </div>
 
-                        <td>
-                            {{ $cuti->alasan }}
-                        </td>
+                <div class="col-md-4">
+                    <a href="#pengumuman" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Pengumuman</div>
+                            <small class="text-muted">Informasi perusahaan</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-                        <td>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="dashboard-card h-100">
 
-                            @if($cuti->status == 'pending')
-                                <span class="badge badge-warning">
-                                    Pending
-                                </span>
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="dashboard-title">Riwayat Pengajuan Terbaru</div>
+                            <small class="text-muted">
+                                Menampilkan pengajuan cuti terbaru Anda
+                            </small>
+                        </div>
 
-                            @elseif($cuti->status == 'approved')
-                                <span class="badge badge-success">
-                                    Disetujui
-                                </span>
-
-                            @else
-                                <span class="badge badge-danger">
-                                    Ditolak
-                                </span>
-                            @endif
-
-                        </td>
-
-                    </tr>
-
-                @empty
-
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            Belum ada pengajuan cuti
-                        </td>
-                    </tr>
-
-                @endforelse --}}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
-                <div class="card mt-4">
-
-                    <div class="card-header">
-                        Pengumuman Terbaru
+                        <a href="{{ route('riwayat.cuti') }}" class="btn btn-light btn-sm border">
+                            Lihat Semua
+                        </a>
                     </div>
 
-                    <div class="table-responsive">
-
-                        <table class="table">
-
+                    <div class="table-responsive p-4">
+                        <table class="table modern-table mb-0">
                             <thead>
                                 <tr>
-                                    <th>Judul</th>
-                                    <th>Tanggal</th>
+                                    <th>Jenis</th>
+                                    <th>Mulai</th>
+                                    <th>Selesai</th>
+                                    <th>Durasi</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-
-                                {{-- @forelse($pengumuman as $item)
-
+                                @forelse($cutiSaya as $cuti)
                                     <tr>
-                                        <td>{{ $item->judul }}</td>
-                                        <td>{{ $item->created_at->format('d M Y') }}</td>
-                                    </tr>
-
-                                @empty
-
-                                    <tr>
-                                        <td colspan="2" class="text-center">
-                                            Belum ada pengumuman
+                                        <td>{{ ucfirst(str_replace('_', ' ', $cuti->jenis_cuti)) }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}</td>
+                                        <td>{{ $cuti->jumlah_hari }} Hari</td>
+                                        <td>
+                                            @if ($cuti->status == 'pending')
+                                                <span class="badge bg-warning text-dark status-badge">Pending</span>
+                                            @elseif($cuti->status == 'approved')
+                                                <span class="badge bg-success status-badge">Disetujui</span>
+                                            @elseif($cuti->status == 'rejected')
+                                                <span class="badge bg-danger status-badge">Ditolak</span>
+                                            @else
+                                                <span class="badge bg-secondary status-badge">Dibatalkan</span>
+                                            @endif
                                         </td>
                                     </tr>
-
-                                @endforelse --}}
-
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            Belum ada data pengajuan cuti.
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
-
                         </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4" id="pengumuman">
+                <div class="dashboard-card h-100">
+
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="dashboard-title">Pengumuman</div>
+                            <small class="text-muted">
+                                Informasi terbaru dari perusahaan
+                            </small>
+                        </div>
+                        <div class="text-muted" style="font-size: 16px;">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                    </div>
+
+                    <div class="p-4 announcement-container">
+                        <div class="announcement-box info-theme">
+                            <div class="announcement-icon-wrapper">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div class="announcement-content">
+                                <div class="announcement-heading">Batas Pengajuan Cuti</div>
+                                <div class="announcement-desc">
+                                    Pengajuan cuti wajib dilakukan minimal 3 hari  ...
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
 
                 </div>
+            </div>
+
+        </div>
+
+    </div>
 </x-app-layout>

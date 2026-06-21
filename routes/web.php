@@ -1,10 +1,9 @@
 <?php
 
+use App\Http\Controllers\PengajuanCutiController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,14 +20,12 @@ Route::get('/dashboard', function () {
 
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
 // HRD
 Route::middleware(['auth', 'role:hrd'])->group(function () {
 
     Route::view('/hrd/dashboard', 'hrd.dashboard')->name('hrd.dashboard');
 
 });
-
 
 // Manager
 Route::middleware(['auth', 'role:manager'])->group(function () {
@@ -40,9 +37,13 @@ Route::middleware(['auth', 'role:manager'])->group(function () {
 // Karyawan
 Route::middleware(['auth', 'role:karyawan'])->group(function () {
 
-    Route::view('/employee/dashboard', 'employee.dashboard') ->name('employee.dashboard');
-    Route::get('/employee/cuti/create', [\App\Http\Controllers\LeaveRequestController::class, 'create'])->name('cuti.create');
-
+    Route::get('/employee/dashboard', [PengajuanCutiController::class, 'dashboard'])->name('employee.dashboard');
+    Route::get('/employee/cuti/create', [PengajuanCutiController::class, 'create'])->name('cuti.create');
+    Route::post('/employee/cuti/store', [PengajuanCutiController::class, 'store'])->name('cuti.store');
+    Route::get('/employee/cuti/riwayat', [PengajuanCutiController::class, 'riwayat'])->name('riwayat.cuti');
+    Route::get('/cuti/{id}/edit', [PengajuanCutiController::class, 'edit'])->name('cuti.edit');
+    Route::put('/cuti/{id}', [PengajuanCutiController::class, 'update'])->name('cuti.update');
+    Route::delete('/cuti/{id}', [PengajuanCutiController::class, 'destroy'])->name('cuti.destroy');
 });
 
 // Profile
