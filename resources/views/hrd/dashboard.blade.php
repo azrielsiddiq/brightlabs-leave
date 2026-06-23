@@ -1,197 +1,403 @@
+```blade
 <x-app-layout>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Dashboard HRD
-    </h2>
-</x-slot>
+    <x-slot name="header">
+        <div>
+            <h2 class="fw-bold mb-1" style="font-size:22px;">
+                Dashboard Manager
+            </h2>
+            <p class="text-muted mb-0" style="font-size:14px;">
+                Pantau pengajuan cuti tim, status persetujuan, dan informasi perusahaan.
+            </p>
+        </div>
+    </x-slot>
 
-<div class="py-4">
+    <style>
+        body {
+            background: #f8fafc;
+        }
 
-    <div class="container-fluid">
+        .dashboard-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+        }
 
-        <!-- Welcome -->
-               <div class="card mb-4">
+        .dashboard-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0f172a;
+        }
 
-                <div class="card-body">
+        .dashboard-subtitle {
+            font-size: 13px;
+            color: #64748b;
+        }
 
-                    <h3>
-                        Selamat Datang,
-                        {{ auth()->user()->name }}
-                    </h3>
+        .stat-box {
+            padding: 20px;
+        }
 
-                    <p>
-                        Role :
-                        <strong>Karyawan</strong>
-                    </p>
+        .stat-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
 
-                    <p class="mb-0">
-                        Kelola pengajuan cuti dan pantau status cuti Anda.
-                    </p>
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f172a;
+        }
 
-                </div>
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            transition: .2s;
+        }
 
-            </div>
+        .quick-link:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
 
-        <!-- Statistik -->
-        <div class="row">
+        .quick-icon {
+            width: 42px;
+            height: 42px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+        }
 
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                {{-- <h3>{{ $totalKaryawan }}</h3> --}}
-                                <p class="mb-0">Total Karyawan</p>
+        .status-badge {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .announcement-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .announcement-box {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            background: #f0fdf4;
+            border: 1px solid #dcfce7;
+        }
+
+        .announcement-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #bbf7d0;
+            color: #166534;
+        }
+
+        .announcement-heading {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .announcement-desc {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .modern-table th {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modern-table td {
+            font-size: 14px;
+            vertical-align: middle;
+        }
+    </style>
+
+    <div class="container-fluid py-4 px-3 px-md-4">
+
+        {{-- Welcome --}}
+        <div class="row g-3 mb-4">
+
+            <div class="col-lg-8">
+                <div class="dashboard-card h-100 p-4">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+
+                        <div>
+                            <div class="dashboard-title mb-2">
+                                Selamat Datang, Manager
                             </div>
 
-                            <i class="icon-people" style="font-size:40px"></i>
+                            <div class="dashboard-subtitle">
+                                Pantau pengajuan cuti anggota tim dan perkembangan aktivitas departemen Anda.
+                            </div>
                         </div>
+
+                        <a href="#" class="btn btn-primary px-4">
+                            Daftar Cuti
+                        </a>
+
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                {{-- <h3>{{ $totalDepartemen }}</h3> --}}
-                                <p class="mb-0">Departemen</p>
-                            </div>
-
-                            <i class="icon-layers" style="font-size:40px"></i>
-                        </div>
+            <div class="col-lg-4">
+                <div class="dashboard-card h-100 p-4">
+                    <div class="dashboard-title">
+                        Ringkasan Tim
                     </div>
-                </div>
-            </div>
 
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                {{-- <h3>{{ $totalAkun }}</h3> --}}
-                                <p class="mb-0">Total Akun</p>
-                            </div>
-
-                            <i class="icon-user" style="font-size:40px"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-xl-3">
-                <div class="card bg-danger text-white">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                {{-- <h3>{{ $totalPengumuman }}</h3> --}}
-                                <p class="mb-0">Pengumuman</p>
-                            </div>
-
-                            <i class="icon-bell" style="font-size:40px"></i>
-                        </div>
-                    </div>
+                    <small class="text-muted">
+                        Monitoring aktivitas anggota tim.
+                    </small>
                 </div>
             </div>
 
         </div>
 
-        <!-- Quick Menu -->
-        <div class="card mt-4">
-            <div class="card-header">
-                Menu Cepat
+        {{-- Statistik --}}
+        <div class="row g-3 mb-4">
+
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Total Anggota Tim</div>
+                    <div class="stat-value">24</div>
+                </div>
             </div>
 
-            <div class="card-body">
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Pending</div>
+                    <div class="stat-value">6</div>
+                </div>
+            </div>
 
-                <div class="row">
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Disetujui</div>
+                    <div class="stat-value">18</div>
+                </div>
+            </div>
 
-                    <div class="col-md-3 mb-3">
-                        <a href=""
-                        {{-- {{ route('karyawan.index') }} --}}
-                           class="btn btn-primary btn-block">
-                            Kelola Karyawan
-                        </a>
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Ditolak</div>
+                    <div class="stat-value">3</div>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- Quick Access --}}
+        <div class="dashboard-card p-4 mb-4">
+
+            <div class="dashboard-title mb-3">
+                Akses Cepat
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <a href="#" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Daftar Cuti</div>
+                            <small class="text-muted">Lihat seluruh cuti</small>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-3">
+                    <a href="#" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Status Cuti</div>
+                            <small class="text-muted">Pantau status</small>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-3">
+                    <a href="#" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Pengumuman</div>
+                            <small class="text-muted">Info perusahaan</small>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-3">
+                    <a href="#" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Buat Akun</div>
+                            <small class="text-muted">Tambah pengguna</small>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+        {{-- Table + Announcement --}}
+        <div class="row g-4">
+
+            <div class="col-lg-8">
+
+                <div class="dashboard-card h-100">
+
+                    <div class="p-4 border-bottom">
+                        <div class="dashboard-title">
+                            Daftar Pengajuan Tim
+                        </div>
+
+                        <small class="text-muted">
+                            Pengajuan cuti terbaru dari anggota tim.
+                        </small>
                     </div>
 
-                    <div class="col-md-3 mb-3">
-                        <a href=""
-                        {{-- {{ route('departemen.index') }} --}}
-                           class="btn btn-success btn-block">
-                            Kelola Departemen
-                        </a>
-                    </div>
+                    <div class="table-responsive p-4">
 
-                    <div class="col-md-3 mb-3">
-                        <a href=""
-                        {{-- {{ route('pengumuman.index') }} --}}
-                           class="btn btn-warning btn-block">
-                            Kelola Pengumuman
-                        </a>
-                    </div>
+                        <table class="table modern-table">
 
-                    <div class="col-md-3 mb-3">
-                        <a href=""
-                        {{-- {{ route('users.index') }} --}}
-                           class="btn btn-danger btn-block">
-                            Kelola Akun
-                        </a>
+                            <thead>
+                                <tr>
+                                    <th>Karyawan</th>
+                                    <th>Jenis Cuti</th>
+                                    <th>Tanggal</th>
+                                    <th>Durasi</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>Andi Saputra</td>
+                                    <td>Cuti Tahunan</td>
+                                    <td>15 Jul 2026</td>
+                                    <td>3 Hari</td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark status-badge">
+                                            Pending
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Budi Santoso</td>
+                                    <td>Cuti Sakit</td>
+                                    <td>12 Jul 2026</td>
+                                    <td>2 Hari</td>
+                                    <td>
+                                        <span class="badge bg-success status-badge">
+                                            Disetujui
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>Citra Dewi</td>
+                                    <td>Cuti Tahunan</td>
+                                    <td>10 Jul 2026</td>
+                                    <td>5 Hari</td>
+                                    <td>
+                                        <span class="badge bg-danger status-badge">
+                                            Ditolak
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
                     </div>
 
                 </div>
 
             </div>
-        </div>
 
-        <!-- Pengumuman Terbaru -->
-        <div class="card mt-4">
+            <div class="col-lg-4">
 
-            <div class="card-header">
-                Pengumuman Terbaru
-            </div>
+                <div class="dashboard-card h-100">
 
-            <div class="table-responsive">
+                    <div class="p-4 border-bottom">
+                        <div class="dashboard-title">
+                            Pengumuman
+                        </div>
 
-                <table class="table table-striped mb-0">
+                        <small class="text-muted">
+                            Informasi terbaru perusahaan.
+                        </small>
+                    </div>
 
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Judul</th>
-                            <th>Tanggal</th>
-                        </tr>
-                    </thead>
+                    <div class="p-4 announcement-container">
 
-                    <tbody>
+                        <div class="announcement-box">
+                            <div class="announcement-icon-wrapper">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div>
+                                <div class="announcement-heading">
+                                    Pengajuan Cuti
+                                </div>
+                                <div class="announcement-desc">
+                                    Pengajuan cuti minimal 3 hari sebelum pelaksanaan.
+                                </div>
+                            </div>
+                        </div>
 
-                        {{-- @forelse ($pengumuman as $item)
+                        <div class="announcement-box">
+                            <div class="announcement-icon-wrapper">
+                                <i class="fa-solid fa-calendar"></i>
+                            </div>
+                            <div>
+                                <div class="announcement-heading">
+                                    Jadwal Libur Nasional
+                                </div>
+                                <div class="announcement-desc">
+                                    Cek kalender perusahaan untuk jadwal terbaru.
+                                </div>
+                            </div>
+                        </div>
 
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
+                    </div>
 
-                                <td>{{ $item->judul }}</td>
-
-                                <td>
-                                    {{ $item->created_at->format('d M Y') }}
-                                </td>
-                            </tr>
-
-                        @empty
-
-                            <tr>
-                                <td colspan="3" class="text-center">
-                                    Belum ada pengumuman
-                                </td>
-                            </tr>
-
-                        @endforelse --}}
-
-                    </tbody>
-
-                </table>
+                </div>
 
             </div>
 
@@ -199,7 +405,5 @@
 
     </div>
 
-</div>
-
-
 </x-app-layout>
+```

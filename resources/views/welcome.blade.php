@@ -148,7 +148,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="fa-solid fa-calendar-check"></i> LeaveFlow
+                <i class="fa-solid fa-calendar-check"></i> Brightlabs Leave
             </a>
 
             <div class="ms-auto d-flex gap-2">

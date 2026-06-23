@@ -4,6 +4,8 @@ use App\Http\Controllers\PengajuanCutiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+//Route test tampilan blade
+Route::view('/test', 'manager.status_cuti')->name('manager.status_cuti');
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,3 +60,5 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+

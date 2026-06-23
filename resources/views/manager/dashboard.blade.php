@@ -1,3 +1,4 @@
+```blade
 <x-app-layout>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -5,10 +6,10 @@
     <x-slot name="header">
         <div>
             <h2 class="fw-bold mb-1" style="font-size:22px;">
-                Dashboard Manager
+                Dashboard HRD
             </h2>
             <p class="text-muted mb-0" style="font-size:14px;">
-                Kelola pengajuan cuti, pantau status persetujuan, dan informasi perusahaan.
+                Kelola data karyawan, pengajuan cuti, departemen, dan informasi perusahaan.
             </p>
         </div>
     </x-slot>
@@ -19,9 +20,9 @@
         }
 
         .dashboard-card {
-            background: #fff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
+            background: #fff;
         }
 
         .dashboard-title {
@@ -66,7 +67,6 @@
         .quick-link:hover {
             background: #f8fafc;
             border-color: #cbd5e1;
-            color: inherit;
         }
 
         .quick-icon {
@@ -78,18 +78,6 @@
             align-items: center;
             justify-content: center;
             color: #334155;
-        }
-
-        .modern-table th {
-            font-size: 12px;
-            color: #64748b;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .modern-table td {
-            font-size: 14px;
-            vertical-align: middle;
         }
 
         .status-badge {
@@ -107,230 +95,235 @@
 
         .announcement-box {
             display: flex;
-            gap: 14px;
+            gap: 16px;
             padding: 16px;
             border-radius: 10px;
+            border: 1px solid transparent;
             background: #f8fafc;
-            border: 1px solid #e2e8f0;
         }
 
-        .announcement-icon {
-            width: 40px;
-            height: 40px;
-            background: #dbeafe;
-            color: #2563eb;
-            border-radius: 10px;
+        .announcement-box.info-theme {
+            background-color: #f0fdf4;
+            border-color: #dcfce7;
+        }
+
+        .announcement-box.info-theme .announcement-icon-wrapper {
+            background-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .announcement-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        @media(max-width:768px){
-            .stat-value{
-                font-size:22px;
+        .announcement-heading {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .announcement-desc {
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .modern-table th {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .modern-table td {
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        @media(max-width:768px) {
+            .stat-value {
+                font-size: 22px;
             }
         }
     </style>
 
     <div class="container-fluid py-4 px-3 px-md-4">
 
-        {{-- WELCOME SECTION --}}
+        {{-- Welcome Card --}}
         <div class="row g-3 mb-4">
 
             <div class="col-lg-8">
                 <div class="dashboard-card h-100 p-4">
-
                     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-
                         <div>
                             <div class="dashboard-title mb-2">
-                                Selamat Datang, {{ auth()->user()->name }}
+                                Selamat Datang, HRD
                             </div>
 
-                            <div class="dashboard-subtitle" style="max-width:550px;">
-                                Anda dapat memantau seluruh pengajuan cuti karyawan,
-                                melakukan persetujuan cuti, dan mengelola informasi perusahaan.
+                            <div class="dashboard-subtitle">
+                                Kelola data karyawan, persetujuan cuti, pengumuman perusahaan,
+                                dan laporan kepegawaian melalui dashboard ini.
                             </div>
                         </div>
 
-                        <span class="badge bg-primary px-3 py-2">
-                            Manager
-                        </span>
-
+                        <a href="#" class="btn btn-primary px-4">
+                            Kelola Karyawan
+                        </a>
                     </div>
-
                 </div>
             </div>
 
             <div class="col-lg-4">
                 <div class="dashboard-card h-100 p-4">
-
                     <div class="dashboard-title mb-2">
-                        Total Pengajuan
-                    </div>
-
-                    <div class="stat-value">
-                        {{ $totalPengajuan ?? 0 }}
+                        Ringkasan Sistem
                     </div>
 
                     <small class="text-muted">
-                        Seluruh data pengajuan cuti
+                        Monitoring aktivitas HRD perusahaan.
                     </small>
-
                 </div>
             </div>
 
         </div>
 
-        {{-- STATISTIC --}}
+        {{-- Statistik --}}
         <div class="row g-3 mb-4">
 
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Pengajuan</div>
-                    <div class="stat-value">
-                        {{ $totalPengajuan ?? 0 }}
-                    </div>
+                    <div class="stat-label">Total Karyawan</div>
+                    <div class="stat-value">120</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+                <div class="dashboard-card stat-box">
+                    <div class="stat-label">Total Departemen</div>
+                    <div class="stat-value">8</div>
                 </div>
             </div>
 
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Pending</div>
-                    <div class="stat-value">
-                        {{ $pending ?? 0 }}
-                    </div>
+                    <div class="stat-value">15</div>
                 </div>
             </div>
 
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Disetujui</div>
-                    <div class="stat-value">
-                        {{ $approved ?? 0 }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Ditolak</div>
-                    <div class="stat-value">
-                        {{ $rejected ?? 0 }}
-                    </div>
+                    <div class="stat-value">58</div>
                 </div>
             </div>
 
         </div>
 
-        {{-- QUICK ACCESS --}}
+        {{-- Quick Access --}}
         <div class="dashboard-card p-4 mb-4">
 
             <div class="dashboard-title mb-3">
-                Menu Cepat
+                Akses Cepat
             </div>
 
             <div class="row g-3">
 
-                <div class="col-md-3">
-                    {{-- <a href="{{ route('cuti.index') }}" class="quick-link">
-
+                <div class="col-md-4">
+                    <a href="#" class="quick-link">
                         <div class="quick-icon">
-                            <i class="fa-solid fa-file-lines"></i>
+                            <i class="fa-solid fa-users"></i>
                         </div>
-
                         <div>
-                            <div class="fw-semibold">
-                                Daftar Cuti
-                            </div>
-                            <small class="text-muted">
-                                Semua pengajuan
-                            </small>
+                            <div class="fw-semibold">Data Karyawan</div>
+                            <small class="text-muted">Kelola data karyawan</small>
                         </div>
-
-                    </a> --}}
+                    </a>
                 </div>
 
-                <div class="col-md-3">
-                    {{-- <a href="{{ route('status-cuti.index') }}" class="quick-link">
-
+                <div class="col-md-4">
+                    <a href="#" class="quick-link">
                         <div class="quick-icon">
-                            <i class="fa-solid fa-circle-check"></i>
+                            <i class="fa-solid fa-building"></i>
                         </div>
-
                         <div>
-                            <div class="fw-semibold">
-                                Status Cuti
-                            </div>
-                            <small class="text-muted">
-                                Approval cuti
-                            </small>
+                            <div class="fw-semibold">Departemen</div>
+                            <small class="text-muted">Kelola departemen</small>
                         </div>
-
-                    </a> --}}
+                    </a>
                 </div>
 
-                <div class="col-md-3">
-                    {{-- <a href="{{ route('users.index') }}" class="quick-link">
-
+                <div class="col-md-4">
+                    <a href="#" class="quick-link">
                         <div class="quick-icon">
-                            <i class="fa-solid fa-user-plus"></i>
+                            <i class="fa-solid fa-file-signature"></i>
                         </div>
-
                         <div>
-                            <div class="fw-semibold">
-                                Buat Akun
-                            </div>
-                            <small class="text-muted">
-                                Tambah user baru
-                            </small>
+                            <div class="fw-semibold">Persetujuan Cuti</div>
+                            <small class="text-muted">Review pengajuan cuti</small>
                         </div>
-
-                    </a> --}}
+                    </a>
                 </div>
 
-                <div class="col-md-3">
-                    {{-- <a href="{{ route('pengumuman.index') }}" class="quick-link">
-
+                <div class="col-md-4">
+                    <a href="#" class="quick-link">
                         <div class="quick-icon">
                             <i class="fa-solid fa-bullhorn"></i>
                         </div>
-
                         <div>
-                            <div class="fw-semibold">
-                                Pengumuman
-                            </div>
-                            <small class="text-muted">
-                                Kelola informasi
-                            </small>
+                            <div class="fw-semibold">Pengumuman</div>
+                            <small class="text-muted">Kelola informasi</small>
                         </div>
+                    </a>
+                </div>
 
-                    </a> --}}
+                <div class="col-md-4">
+                    <a href="#" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-chart-column"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Laporan Cuti</div>
+                            <small class="text-muted">Lihat laporan</small>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="#" class="quick-link">
+                        <div class="quick-icon">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Buat Akun</div>
+                            <small class="text-muted">Tambah pengguna</small>
+                        </div>
+                    </a>
                 </div>
 
             </div>
 
         </div>
 
-        {{-- TABLE + ANNOUNCEMENT --}}
+        {{-- Tabel dan Pengumuman --}}
         <div class="row g-4">
 
             <div class="col-lg-8">
 
                 <div class="dashboard-card h-100">
 
-                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
-
-                        <div>
-                            <div class="dashboard-title">
-                                Pengajuan Cuti Terbaru
-                            </div>
-
-                            <small class="text-muted">
-                                Pengajuan cuti terbaru karyawan
-                            </small>
+                    <div class="p-4 border-bottom">
+                        <div class="dashboard-title">
+                            Daftar Pengajuan Cuti Terbaru
                         </div>
 
+                        <small class="text-muted">
+                            Menampilkan pengajuan cuti terbaru dari karyawan.
+                        </small>
                     </div>
 
                     <div class="table-responsive p-4">
@@ -339,60 +332,51 @@
 
                             <thead>
                                 <tr>
-                                    <th>Nama</th>
-                                    <th>Mulai</th>
-                                    <th>Selesai</th>
+                                    <th>Karyawan</th>
+                                    <th>Departemen</th>
+                                    <th>Jenis Cuti</th>
+                                    <th>Tanggal</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
 
                             <tbody>
 
-                                {{-- @forelse($cutiTerbaru as $cuti)
+                                <tr>
+                                    <td>Ahmad Fauzi</td>
+                                    <td>IT</td>
+                                    <td>Cuti Tahunan</td>
+                                    <td>12 Jul 2026</td>
+                                    <td>
+                                        <span class="badge bg-warning text-dark status-badge">
+                                            Pending
+                                        </span>
+                                    </td>
+                                </tr>
 
-                                    <tr>
+                                <tr>
+                                    <td>Dewi Lestari</td>
+                                    <td>Finance</td>
+                                    <td>Cuti Sakit</td>
+                                    <td>10 Jul 2026</td>
+                                    <td>
+                                        <span class="badge bg-success status-badge">
+                                            Disetujui
+                                        </span>
+                                    </td>
+                                </tr>
 
-                                        <td>{{ $cuti->user->name }}</td>
-
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}
-                                        </td>
-
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}
-                                        </td>
-
-                                        <td>
-
-                                            @if($cuti->status == 'pending')
-                                                <span class="badge bg-warning text-dark status-badge">
-                                                    Pending
-                                                </span>
-
-                                            @elseif($cuti->status == 'approved')
-                                                <span class="badge bg-success status-badge">
-                                                    Disetujui
-                                                </span>
-
-                                            @else
-                                                <span class="badge bg-danger status-badge">
-                                                    Ditolak
-                                                </span>
-                                            @endif
-
-                                        </td>
-
-                                    </tr>
-
-                                @empty --}}
-
-                                    <tr>
-                                        <td colspan="4" class="text-center py-4 text-muted">
-                                            Belum ada pengajuan cuti.
-                                        </td>
-                                    </tr>
-{{--
-                                @endforelse --}}
+                                <tr>
+                                    <td>Rudi Hartono</td>
+                                    <td>Marketing</td>
+                                    <td>Cuti Tahunan</td>
+                                    <td>09 Jul 2026</td>
+                                    <td>
+                                        <span class="badge bg-danger status-badge">
+                                            Ditolak
+                                        </span>
+                                    </td>
+                                </tr>
 
                             </tbody>
 
@@ -411,44 +395,64 @@
                     <div class="p-4 border-bottom">
 
                         <div class="dashboard-title">
-                            Pengumuman Terbaru
+                            Pengumuman
                         </div>
 
                         <small class="text-muted">
-                            Informasi perusahaan
+                            Informasi terbaru perusahaan
                         </small>
 
                     </div>
 
                     <div class="p-4 announcement-container">
-{{--
-                        @forelse($pengumuman as $item)
 
-                            <div class="announcement-box">
-
-                                <div class="announcement-icon">
-                                    <i class="fa-solid fa-bullhorn"></i>
-                                </div>
-
-                                <div>
-                                    <div class="fw-semibold">
-                                        {{ $item->judul }}
-                                    </div>
-
-                                    <small class="text-muted">
-                                        {{ $item->created_at->format('d M Y') }}
-                                    </small>
-                                </div>
-
+                        <div class="announcement-box info-theme">
+                            <div class="announcement-icon-wrapper">
+                                <i class="fa-solid fa-bullhorn"></i>
                             </div>
 
-                        @empty --}}
+                            <div>
+                                <div class="announcement-heading">
+                                    Batas Pengajuan Cuti
+                                </div>
 
-                            <div class="text-center text-muted">
-                                Belum ada pengumuman.
+                                <div class="announcement-desc">
+                                    Pengajuan cuti wajib dilakukan minimal 3 hari sebelum tanggal cuti.
+                                </div>
                             </div>
-{{--
-                        @endforelse --}}
+                        </div>
+
+                        <div class="announcement-box info-theme">
+                            <div class="announcement-icon-wrapper">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+
+                            <div>
+                                <div class="announcement-heading">
+                                    Libur Nasional
+                                </div>
+
+                                <div class="announcement-desc">
+                                    Perusahaan libur pada tanggal yang ditetapkan pemerintah.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="announcement-box info-theme">
+                            <div class="announcement-icon-wrapper">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </div>
+
+                            <div>
+                                <div class="announcement-heading">
+                                    Update Kebijakan HR
+                                </div>
+
+                                <div class="announcement-desc">
+                                    Kebijakan cuti terbaru telah diperbarui oleh HRD.
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -461,3 +465,4 @@
     </div>
 
 </x-app-layout>
+```
