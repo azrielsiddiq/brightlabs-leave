@@ -2,9 +2,7 @@
 
     <div class="brand-logo">
         <a href="{{ route('dashboard') }}">
-            <img src="{{ asset('assets/images/logo-icon.png') }}"
-                class="logo-icon"
-                alt="logo icon">
+            <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
 
             <h5 class="logo-text">
                 Sistem Cuti
@@ -30,86 +28,67 @@
         </li>
 
         @if ($role === 'hrd')
-
             <li class="sidebar-header">
                 MENU HRD
             </li>
 
             <li>
-                <a href="" class="waves-effect">
-                    <i class="icon-people"></i>
-                    <span>Data Karyawan</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="" class="waves-effect">
-                    <i class="icon-layers"></i>
-                    <span>Data Departemen</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="" class="waves-effect">
+                <a href="{{ route('hrd.daftar_cuti') }}" class="waves-effect">
                     <i class="icon-calendar"></i>
                     <span>Daftar Cuti</span>
                 </a>
             </li>
 
             <li>
-                <a href="" class="waves-effect">
-                    <i class="icon-bell"></i>
-                    <span>Pengumuman</span>
+                <a href="{{ route('hrd.departemen') }}" class="waves-effect">
+                    <i class="icon-layers"></i>
+                    <span>Departemen</span>
                 </a>
             </li>
 
             <li>
-                <a href="" class="waves-effect">
+                <a href="{{ route('hrd.user') }}" class="waves-effect">
                     <i class="icon-user"></i>
                     <span>Kelola Akun</span>
                 </a>
             </li>
 
+            <li>
+                <a href="{{ route('hrd.pengumuman') }}" class="waves-effect">
+                    <i class="icon-bell"></i>
+                    <span>Pengumuman</span>
+                </a>
+            </li>
         @endif
 
         @if ($role === 'manager')
-
             <li class="sidebar-header">
                 MENU MANAGER
             </li>
 
             <li>
-                <a href="" class="waves-effect">
+                <a href="{{ route('manager.daftar_cuti') }}" class="waves-effect">
                     <i class="icon-calendar"></i>
-                    <span>Daftar Cuti</span>
+                    <span>Daftar Pengajuan Cuti</span>
                 </a>
             </li>
 
             <li>
-                <a href="" class="waves-effect">
-                    <i class="icon-check"></i>
-                    <span>Status Cuti</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="" class="waves-effect">
+                <a href="{{ route('manager.user') }}" class="waves-effect">
                     <i class="icon-user"></i>
                     <span>Buat Akun</span>
                 </a>
             </li>
 
             <li>
-                <a href="" class="waves-effect">
+                <a href="{{ route('manager.pengumuman') }}" class="waves-effect">
                     <i class="icon-bell"></i>
                     <span>Pengumuman</span>
                 </a>
             </li>
-
         @endif
 
         @if ($role === 'karyawan')
-
             <li class="sidebar-header">
                 MENU KARYAWAN
             </li>
@@ -134,7 +113,6 @@
                     <span>Pengumuman</span>
                 </a>
             </li>
-
         @endif
 
     </ul>

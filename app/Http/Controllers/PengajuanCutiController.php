@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PengajuanCuti;
+use App\Models\Pengumuman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,13 +38,87 @@ class PengajuanCutiController extends Controller
             ->where('status', 'approved')
             ->count();
 
+        $pengumuman = Pengumuman::with('creator')
+            ->latest()
+            ->take(3)
+            ->get();
+
         return view('employee.dashboard', compact(
             'cutiSaya',
             'totalCutiTahunan',
             'sisaCuti',
             'pending',
-            'approved'
+            'approved',
+            'pengumuman'
         ));
+    }
+
+    public function diterima(Request $request, PengajuanCuti $cuti)
+    {
+        if ($cuti->status != 'pending') {
+            return back()->with('alert', [
+                'type' => 'error',
+                'title' => 'Gagal',
+                'message' => 'Pengajuan sudah diproses.',
+            ]);
+        }
+
+        $request->validate([
+            'catatan_hrd' => 'nullable|string|max:500',
+        ]);
+
+        $cuti->update([
+            'status' => 'approved',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'catatan_hrd' => $request->catatan_hrd,
+        ]);
+
+        return back()->with('alert', [
+            'type' => 'success',
+            'title' => 'Berhasil',
+            'message' => 'Pengajuan cuti berhasil disetujui.',
+        ]);
+    }
+
+    public function ditolak(Request $request, PengajuanCuti $cuti)
+    {
+        if ($cuti->status != 'pending') {
+            return back()->with('alert', [
+                'type' => 'error',
+                'title' => 'Gagal',
+                'message' => 'Pengajuan sudah diproses.',
+            ]);
+        }
+
+        $request->validate([
+            'catatan_hrd' => 'required|string|max:500',
+        ], [
+            'catatan_hrd.required' => 'Alasan penolakan wajib diisi.',
+        ]);
+
+        $cuti->update([
+            'status' => 'rejected',
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'catatan_hrd' => $request->catatan_hrd,
+        ]);
+
+        return back()->with('alert', [
+            'type' => 'success',
+            'title' => 'Berhasil',
+            'message' => 'Pengajuan cuti berhasil ditolak.',
+        ]);
+    }
+
+    public function daftarCutiHRD()
+    {
+        $cuti = PengajuanCuti::with([
+            'user.department',
+            'approver',
+        ])->latest()->get();
+
+        return view('hrd.daftar_cuti', compact('cuti'));
     }
 
     public function create()

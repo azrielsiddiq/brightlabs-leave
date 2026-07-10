@@ -173,7 +173,6 @@
 
         </div>
 
-        {{-- Table --}}
         <div class="dashboard-card">
 
             <div class="p-4 border-bottom d-flex justify-content-between align-items-center">

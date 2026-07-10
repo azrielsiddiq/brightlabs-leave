@@ -135,14 +135,19 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
-        .announcement-box.info-theme {
-            background-color: #f0fdf4;
-            border-color: #dcfce7;
+        .announcement-box.manager-theme {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+            border-left: 5px solid #dc2626;
         }
 
-        .announcement-box.info-theme .announcement-icon-wrapper {
-            background-color: #bbf7d0;
-            color: #166534;
+        .announcement-box.manager-theme .announcement-icon-wrapper {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .announcement-box.manager-theme .announcement-tag {
+            color: #b91c1c;
         }
 
         .announcement-box.warning-theme {
@@ -178,8 +183,13 @@
             margin-bottom: 2px;
         }
 
-        .announcement-box.info-theme .announcement-tag { color: #166534; }
-        .announcement-box.warning-theme .announcement-tag { color: #854d0e; }
+        .announcement-box.info-theme .announcement-tag {
+            color: #166534;
+        }
+
+        .announcement-box.warning-theme .announcement-tag {
+            color: #854d0e;
+        }
 
         .announcement-heading {
             font-size: 14px;
@@ -396,37 +406,72 @@
                 </div>
             </div>
 
-            <div class="col-lg-4" id="pengumuman">
+            <div class="col-lg-4">
+
                 <div class="dashboard-card h-100">
 
-                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
-                        <div>
-                            <div class="dashboard-title">Pengumuman</div>
-                            <small class="text-muted">
-                                Informasi terbaru dari perusahaan
-                            </small>
+                    <div class="p-4 border-bottom">
+
+                        <div class="dashboard-title">
+                            Pengumuman
                         </div>
-                        <div class="text-muted" style="font-size: 16px;">
-                            <i class="fa-solid fa-bullhorn"></i>
-                        </div>
+
+                        <small class="text-muted">
+                            Informasi terbaru perusahaan
+                        </small>
+
                     </div>
 
                     <div class="p-4 announcement-container">
-                        <div class="announcement-box info-theme">
-                            <div class="announcement-icon-wrapper">
-                                <i class="fa-solid fa-bullhorn"></i>
-                            </div>
-                            <div class="announcement-content">
-                                <div class="announcement-heading">Batas Pengajuan Cuti</div>
-                                <div class="announcement-desc">
-                                    Pengajuan cuti wajib dilakukan minimal 3 hari  ...
+
+                        @forelse($pengumuman as $item)
+                            @php
+                                $isManager = $item->creator && $item->creator->role === 'manager';
+                            @endphp
+
+                            <div class="announcement-box mb-3 {{ $isManager ? 'manager-theme' : 'info-theme' }}">
+
+                                <div class="announcement-icon-wrapper">
+                                    <i class="fa-solid fa-bullhorn"></i>
                                 </div>
+
+                                <div class="flex-grow-1">
+
+                                    <div class="announcement-heading">
+                                        {{ $item->judul }}
+                                    </div>
+
+                                    <div class="announcement-desc">
+                                        {{ \Illuminate\Support\Str::limit($item->isi, 90) }}
+                                    </div>
+
+                                    <small class="text-muted d-block mt-2">
+                                        <i class="fa-regular fa-user me-1"></i>
+                                        {{ $item->creator->name }}
+                                        ({{ ucfirst($item->creator->role) }})
+                                    </small>
+
+                                    <small class="text-muted d-block">
+                                        <i class="fa-regular fa-calendar me-1"></i>
+                                        {{ $item->created_at->format('d M Y') }}
+                                    </small>
+
+                                </div>
+
                             </div>
-                        </div>
+
+                        @empty
+
+                            <div class="text-center text-muted py-4">
+                                <i class="fa-solid fa-bullhorn fa-2x mb-3"></i>
+                                <p class="mb-0">Belum ada pengumuman.</p>
+                            </div>
+                        @endforelse
 
                     </div>
 
                 </div>
+
             </div>
 
         </div>
