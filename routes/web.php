@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/test', 'manager.status_cuti')->name('manager.status_cuti');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/dashboard', function () {

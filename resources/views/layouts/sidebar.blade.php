@@ -1,14 +1,15 @@
 <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
 
-    <div class="brand-logo">
-        <a href="{{ route('dashboard') }}">
-            <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
+    <div class="brand-logo text-center mb-4">
+    <a href="{{ route('dashboard') }}" class="d-flex align-items-center justify-content-center text-decoration-none gap-2">
+        <i class="fa-solid fa-calendar-check" style="color:#64748b; font-size:22px;"></i>
+        <h5 class="logo-text fw-bold m-1"  style="color:#64748b;">
+            Brightlabs
+        </h5>
+    </a>
+</div>
 
-            <h5 class="logo-text">
-                Sistem Cuti
-            </h5>
-        </a>
-    </div>
+
 
     @php
         $role = auth()->user()->role;
