@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Rocker - Bootstrap4 Admin Dashboard Template</title>
+    <title>Brightlabs Leave</title>
 
     <!-- favicon -->
-    <link rel="icon" href="{{ asset('assets/images/favicon.ico') }}" type="image/x-icon" />
+   <!-- Ganti link icon lama Anda dengan ini -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20448%20512%27%20fill%3D%27%23007bff%27%3E%3Cpath%20d%3D%27M152%2024c0-13.3-10.7-24-24-24s-24%2010.7-24%2024V64H64C28.7%2064%200%2092.7%200%20128v16%2048V448c0%2035.3%2028.7%2064%2064%2064H384c35.3%200%2064-28.7%2064-64V192%20144%20128c0-35.3-28.7-64-64-64H344V24c0-13.3-10.7-24-24-24s-24%2010.7-24%2024V64H152V24zM48%20192H400V448c0%208.8-7.2%2016-16%2016H64c-8.8%200-16-7.2-16-16V192zm305%2079c-9.4-9.4-24.6-9.4-33.9%200l-111%20111-47-47c-9.4-9.4-24.6-9.4-33.9%200s-9.4%2024.6%200%2033.9l64%2064c9.4%209.4%2024.6%209.4%2033.9%200L353%20305c9.4-9.4%209.4-24.6%200-33.9z%27%2F%3E%3C%2Fsvg%3E" />
 
     <!-- Vector CSS -->
     <link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />

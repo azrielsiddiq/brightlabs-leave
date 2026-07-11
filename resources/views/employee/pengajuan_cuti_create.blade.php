@@ -169,13 +169,13 @@
                 padding-bottom: 12px;
             }
             .form-container {
-                padding: 20px 16px !important; 
+                padding: 20px 16px !important;
                 border-radius: 12px !important;
-                background: #ffffff !important; 
+                background: #ffffff !important;
                 border: 1px solid var(--slate-200) !important;
             }
             .input-premium {
-                padding: 14px 12px; 
+                padding: 14px 12px;
                 font-size: 15px;
             }
             .button-stack-mobile {
@@ -190,129 +190,168 @@
         }
     </style>
 
-    <div class="container py-4 px-2 px-md-5">
-        <div class="row justify-content-center">
-            <div class="col-xl-9 col-lg-11">
+  <div class="container py-4 px-2 px-md-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-11">
 
-                <div class="page-header">
-                    <h2 class="fw-bold tracking-tight mb-1" style="font-size: 24px; color: var(--slate-900);">Pengajuan Cuti</h2>
-                    <p class="text-muted mb-0" style="font-size: 14px; color: var(--slate-400);">
-                        Silakan lengkapi formulir di bawah ini secara akurat.
-                    </p>
-                </div>
-
-                <div class="row g-2 g-md-3 mb-4">
-                    @php
-                        $rules = [
-                            ['title' => 'Tahunan', 'value' => 'Maks. 12 Hari Kerja'],
-                            ['title' => 'Medis / Sakit', 'value' => 'Wajib Lampiran SKD'],
-                            ['title' => 'Kebutuhan Penting', 'value' => 'Maks. 3 Hari Kerja'],
-                        ];
-                    @endphp
-
-                    @foreach($rules as $rule)
-                        <div class="col-12 col-md-4">
-                            <div class="info-panel">
-                                <div class="info-label">{{ $rule['title'] }}</div>
-                                <div class="info-value">{{ $rule['value'] }}</div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-
-                <div class="form-container">
-                    <form action="{{ route('cuti.store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-
-                        <div class="mb-4">
-                            <label class="field-label">Kategori Cuti</label>
-                            <select name="jenis_cuti" id="jenis_cuti" class="input-premium form-select" required>
-                                <option value="">Pilih salah satu kategori</option>
-                                <option value="cuti_tahunan" {{ old('jenis_cuti') == 'cuti_tahunan' ? 'selected' : '' }}>Cuti Tahunan</option>
-                                <option value="cuti_sakit" {{ old('jenis_cuti') == 'cuti_sakit' ? 'selected' : '' }}>Cuti Sakit</option>
-                                <option value="cuti_penting" {{ old('jenis_cuti') == 'cuti_penting' ? 'selected' : '' }}>Cuti Penting</option>
-                            </select>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 mb-4">
-                                <label class="field-label">Tanggal Mulai</label>
-                                <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="input-premium" value="{{ old('tanggal_mulai') }}" required>
-                            </div>
-
-                            <div class="col-6 mb-4">
-                                <label class="field-label">Tanggal Selesai</label>
-                                <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="input-premium" value="{{ old('tanggal_selesai') }}" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="field-label">Durasi Terhitung</label>
-                            <input type="text" id="jumlah_hari" class="input-premium" placeholder="Otomatis terhitung oleh sistem" readonly>
-                        </div>
-
-                        <div class="mb-2">
-                            <label class="field-label">Alasan Pengajuan</label>
-                            <textarea name="alasan" rows="4" class="input-premium" placeholder="Tuliskan komitmen atau alasan kebutuhan cuti Anda secara profesional" required>{{ old('alasan') }}</textarea>
-                        </div>
-
-                        <div class="bukti-wrapper" id="bukti-section">
-                            <label class="field-label">Dokumen Medis Pendukung</label>
-                            <input type="file" name="bukti" class="input-premium">
-                            <div class="mt-2" style="font-size: 12px; color: var(--slate-400);">
-                                Format yang diterima: PDF, JPG, PNG. Maksimal ukuran file 2MB.
-                            </div>
-                        </div>
-
-                        <div class="d-flex justify-content-end gap-3 button-stack-mobile mt-4 pt-3" style="border-top: 1px solid var(--slate-200);">
-                            <a href="{{ route('employee.dashboard') }}" class="btn-minimal btn-minimal-secondary">
-                                Batalkan
-                            </a>
-                            <button type="submit" class="btn-minimal btn-minimal-primary">
-                                Kirim Permohonan
-                            </button>
-                        </div>
-
-                    </form>
-                </div>
-
+            <div class="page-header">
+                <h2 class="fw-bold tracking-tight mb-1" style="font-size: 24px; color: var(--slate-900);">Pengajuan Cuti</h2>
+                <p class="text-muted mb-0" style="font-size: 14px; color: var(--slate-400);">
+                    Silakan lengkapi formulir di bawah ini secara akurat.
+                </p>
             </div>
+
+            <div class="row g-2 g-md-3 mb-4">
+                @php
+                    $rules = [
+                        ['title' => 'Tahunan', 'value' => 'Maks. 12 Hari Kerja'],
+                        ['title' => 'Medis / Sakit', 'value' => 'Wajib Lampiran SKD'],
+                        ['title' => 'Kebutuhan Penting', 'value' => 'Maks. 3 Hari Kerja'],
+                    ];
+                @endphp
+
+                @foreach($rules as $rule)
+                    <div class="col-12 col-md-4">
+                        <div class="info-panel">
+                            <div class="info-label">{{ $rule['title'] }}</div>
+                            <div class="info-value">{{ $rule['value'] }}</div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <div class="form-container">
+                <!-- Tambahkan id="formCuti" untuk divalidasi oleh JavaScript -->
+                <form action="{{ route('cuti.store') }}" method="POST" enctype="multipart/form-data" id="formCuti">
+                    @csrf
+
+                    <div class="mb-4">
+                        <label class="field-label">Kategori Cuti</label>
+                        <select name="jenis_cuti" id="jenis_cuti" class="input-premium form-select" required>
+                            <option value="">Pilih salah satu kategori</option>
+                            <option value="cuti_tahunan" {{ old('jenis_cuti') == 'cuti_tahunan' ? 'selected' : '' }}>Cuti Tahunan</option>
+                            <option value="cuti_sakit" {{ old('jenis_cuti') == 'cuti_sakit' ? 'selected' : '' }}>Cuti Sakit</option>
+                            <option value="cuti_penting" {{ old('jenis_cuti') == 'cuti_penting' ? 'selected' : '' }}>Cuti Penting</option>
+                        </select>
+                    </div>
+
+                    <!-- STRUKTUR ROW TANGGAL SUDAH DIPERBAIKI & DIBERSIHKAN -->
+                    <div class="row">
+                        <div class="col-6 mb-4">
+                            <label class="field-label">Tanggal Mulai</label>
+                            <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="input-premium" value="{{ old('tanggal_mulai') }}" required>
+                        </div>
+
+                        <div class="col-6 mb-4">
+                            <label class="field-label">Tanggal Selesai</label>
+                            <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="input-premium" value="{{ old('tanggal_selesai') }}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="field-label">Durasi Terhitung</label>
+                        <input type="text" id="jumlah_hari" class="input-premium" placeholder="Otomatis terhitung oleh sistem" readonly>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="field-label">Alasan Pengajuan</label>
+                        <textarea name="alasan" rows="4" class="input-premium" placeholder="Tuliskan komitmen atau alasan kebutuhan cuti Anda secara profesional" required>{{ old('alasan') }}</textarea>
+                    </div>
+
+                    <div class="bukti-wrapper" id="bukti-section">
+                        <label class="field-label">Dokumen Medis Pendukung</label>
+                        <input type="file" name="bukti" class="input-premium">
+                        <div class="mt-2" style="font-size: 12px; color: var(--slate-400);">
+                            Format yang diterima: PDF, JPG, PNG. Maksimal ukuran file 2MB.
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 button-stack-mobile mt-4 pt-3" style="border-top: 1px solid var(--slate-200);">
+                        <a href="{{ route('employee.dashboard') }}" class="btn-minimal btn-minimal-secondary">
+                            Batalkan
+                        </a>
+                        <button type="submit" class="btn-minimal btn-minimal-primary">
+                            Kirim Permohonan
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
         </div>
     </div>
+</div>
 
-    <script>
-        const jenisCuti = document.getElementById('jenis_cuti');
-        const buktiSection = document.getElementById('bukti-section');
-        const tanggalMulai = document.getElementById('tanggal_mulai');
-        const tanggalSelesai = document.getElementById('tanggal_selesai');
-        const jumlahHari = document.getElementById('jumlah_hari');
+<script>
+    const formCuti = document.getElementById('formCuti');
+    const jenisCuti = document.getElementById('jenis_cuti');
+    const buktiSection = document.getElementById('bukti-section');
+    const tanggalMulai = document.getElementById('tanggal_mulai');
+    const tanggalSelesai = document.getElementById('tanggal_selesai');
+    const jumlahHari = document.getElementById('jumlah_hari');
 
-        function toggleBukti() {
-            if (jenisCuti.value === 'cuti_sakit') {
-                buktiSection.classList.add('show');
-            } else {
-                buktiSection.classList.remove('show');
-            }
+    // Ambil data kuota sisa cuti dari Controller Laravel
+    const sisaCutiKaryawan = {{ $sisaCuti ?? 12 }};
+
+    // 1. Kunci tanggal agar tidak bisa memilih hari ke belakang (minimal hari ini)
+    const hariIni = new Date().toISOString().split("T")[0];
+    tanggalMulai.min = hariIni;
+
+    function toggleBukti() {
+        if (jenisCuti.value === 'cuti_sakit') {
+            buktiSection.classList.add('show');
+        } else {
+            buktiSection.classList.remove('show');
+        }
+    }
+
+    function hitungJumlahHari() {
+        // Sinkronisasi: Tanggal selesai minimal harus sama dengan tanggal mulai
+        if (tanggalMulai.value) {
+            tanggalSelesai.min = tanggalMulai.value;
         }
 
-        function hitungJumlahHari() {
-            if (!tanggalMulai.value || !tanggalSelesai.value) {
-                jumlahHari.value = '';
-                return;
-            }
+        if (!tanggalMulai.value || !tanggalSelesai.value) {
+            jumlahHari.value = '';
+            return;
+        }
 
+        const mulai = new Date(tanggalMulai.value);
+        const selesai = new Date(tanggalSelesai.value);
+
+        // Logika hitung total rentang hari
+        const selisih = Math.ceil((selesai - mulai) / (1000 * 60 * 60 * 24)) + 1;
+
+        if (selisih > 0) {
+            jumlahHari.value = `${selisih} Hari Kerja`;
+        } else {
+            jumlahHari.value = '';
+            tanggalSelesai.value = ''; // Reset jika user memaksa tanggal terbalik
+        }
+    }
+
+    // 2. Logic Interseptor saat form akan dikirim ke server
+    formCuti.addEventListener('submit', function(e) {
+        if (jenisCuti.value === 'cuti_tahunan') {
             const mulai = new Date(tanggalMulai.value);
             const selesai = new Date(tanggalSelesai.value);
-            const selisih = ((selesai - mulai) / (1000 * 60 * 60 * 24)) + 1;
+            const totalHari = Math.ceil((selesai - mulai) / (1000 * 60 * 60 * 24)) + 1;
 
-            jumlahHari.value = selisih > 0 ? `${selisih} Hari Kerja` : '';
+            // Jika pengajuan melampaui sisa jatah
+            if (totalHari > sisaCutiKaryawan) {
+                e.preventDefault(); // Batalkan submit form
+                alert(`Pengajuan Gagal!\n\nAnda mencoba mengambil ${totalHari} hari cuti.\nSisa kuota Cuti Tahunan Anda saat ini tinggal ${sisaCutiKaryawan} hari.`);
+            }
         }
+    });
 
-        jenisCuti.addEventListener('change', toggleBukti);
-        tanggalMulai.addEventListener('change', hitungJumlahHari);
-        tanggalSelesai.addEventListener('change', hitungJumlahHari);
+    jenisCuti.addEventListener('change', toggleBukti);
+    tanggalMulai.addEventListener('change', hitungJumlahHari);
+    tanggalSelesai.addEventListener('change', hitungJumlahHari);
 
-        toggleBukti();
-        hitungJumlahHari();
-    </script>
+    // Jalankan fungsi inisialisasi di awal halaman dimuat
+    toggleBukti();
+    hitungJumlahHari();
+</script>
+
 </x-app-layout>

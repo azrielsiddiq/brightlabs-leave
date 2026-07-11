@@ -188,6 +188,23 @@
             font-size: 14px;
             vertical-align: middle;
         }
+        .btn-modern {
+            background: #64748b; /* abu kebiruan elegan */
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 10px 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-modern:hover {
+            background: #475569; /* abu lebih gelap saat hover */
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
+        }
 
         @media(max-width:768px) {
             .stat-value {

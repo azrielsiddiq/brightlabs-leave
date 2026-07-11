@@ -215,6 +215,24 @@
             font-size: 14px;
             vertical-align: middle;
         }
+    .btn-modern {
+        background: #64748b; /* abu kebiruan elegan */
+        color: #fff;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 15px;
+        padding: 10px 24px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .btn-modern:hover {
+        background: #475569; /* abu lebih gelap saat hover */
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
+    }
+
 
         @media(max-width:768px) {
             .stat-value {
@@ -239,7 +257,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('cuti.create') }}" class="btn btn-primary px-4">
+                        <a href="{{ route('cuti.create') }}" class="btn btn-modern px-3">
                             Ajukan Cuti
                         </a>
                     </div>
@@ -270,37 +288,36 @@
 
         </div>
 
-        <div class="row g-3 mb-4">
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Cuti Tahunan</div>
-                    <div class="stat-value">{{ $totalCutiTahunan }}</div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Sisa Cuti</div>
-                    <div class="stat-value">{{ $sisaCuti }}</div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Pending</div>
-                    <div class="stat-value">{{ $pending }}</div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Disetujui</div>
-                    <div class="stat-value">{{ $approved }}</div>
-                </div>
-            </div>
-
+      <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="dashboard-card stat-box">
+            <div class="stat-label">Total Cuti Tahunan</div>
+            <div class="stat-value">{{ $totalCutiTahunan }}</div>
         </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="dashboard-card stat-box">
+            <div class="stat-label">Sisa Cuti</div>
+            <div class="stat-value">{{ $sisaCuti }}</div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="dashboard-card stat-box">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value">{{ $pending }}</div>
+        </div>
+    </div>
+
+    <div class="col-6 col-lg-3">
+        <div class="dashboard-card stat-box">
+            <div class="stat-label">Disetujui</div>
+            <div class="stat-value">{{ $approved }}</div>
+        </div>
+    </div>
+</div>
+
 
         <div class="dashboard-card p-4 mb-4">
             <div class="dashboard-title mb-3">Akses Cepat</div>

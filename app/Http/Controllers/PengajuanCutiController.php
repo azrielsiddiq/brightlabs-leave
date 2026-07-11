@@ -11,6 +11,23 @@ use Illuminate\Support\Facades\Storage;
 
 class PengajuanCutiController extends Controller
 {
+    // Konstanta kuota cuti tahunan agar mudah diatur jika berubah
+    private const TOTAL_CUTI_TAHUNAN = 12;
+
+    /**
+     * Helper untuk menghitung sisa cuti tahunan user yang aktif saat ini.
+     */
+    private function hitungSisaCuti($user)
+    {
+        $cutiDipakai = PengajuanCuti::where('user_id', $user->id)
+            ->where('jenis_cuti', 'cuti_tahunan')
+            ->where('status', 'approved')
+            ->whereYear('tanggal_mulai', now()->year)
+            ->sum('jumlah_hari');
+
+        return max(0, self::TOTAL_CUTI_TAHUNAN - $cutiDipakai);
+    }
+
     public function dashboard()
     {
         $user = Auth::user();
@@ -20,15 +37,8 @@ class PengajuanCutiController extends Controller
             ->take(5)
             ->get();
 
-        $totalCutiTahunan = 12;
-
-        $cutiDipakai = PengajuanCuti::where('user_id', $user->id)
-            ->where('jenis_cuti', 'cuti_tahunan')
-            ->where('status', 'approved')
-            ->whereYear('tanggal_mulai', now()->year)
-            ->sum('jumlah_hari');
-
-        $sisaCuti = max(0, $totalCutiTahunan - $cutiDipakai);
+        $totalCutiTahunan = self::TOTAL_CUTI_TAHUNAN;
+        $sisaCuti = $this->hitungSisaCuti($user);
 
         $pending = PengajuanCuti::where('user_id', $user->id)
             ->where('status', 'pending')
@@ -123,7 +133,9 @@ class PengajuanCutiController extends Controller
 
     public function create()
     {
-        return view('employee.pengajuan_cuti_create');
+        // WAJIB: Kirim sisa kuota ke form create untuk digunakan oleh JavaScript
+        $sisaCuti = $this->hitungSisaCuti(Auth::user());
+        return view('employee.pengajuan_cuti_create', compact('sisaCuti'));
     }
 
     public function riwayat()
@@ -141,8 +153,29 @@ class PengajuanCutiController extends Controller
 
         $user = Auth::user();
 
-        $jumlahHari = Carbon::parse($request->tanggal_mulai)
-            ->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
+        // Validasi tambahan backend: Mengunci tanggal mulai agar tidak bisa mundur ke masa lalu
+        $mulai = Carbon::parse($request->tanggal_mulai);
+        if ($mulai->isPast() && !$mulai->isToday()) {
+            return back()->withInput()->with('alert', [
+                'type' => 'error',
+                'title' => 'Tanggal Tidak Valid',
+                'message' => 'Tidak boleh memilih tanggal mulai di masa lalu.',
+            ]);
+        }
+
+        $jumlahHari = $mulai->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
+
+        // Validasi tambahan backend: Cek kuota sisa cuti jika memilih tipe cuti tahunan
+        if ($request->jenis_cuti === 'cuti_tahunan') {
+            $sisaCuti = $this->hitungSisaCuti($user);
+            if ($jumlahHari > $sisaCuti) {
+                return back()->withInput()->with('alert', [
+                    'type' => 'error',
+                    'title' => 'Pengajuan Ditolak',
+                    'message' => "Jumlah pengajuan ($jumlahHari hari) melebihi jatah sisa cuti Anda ($sisaCuti hari).",
+                ]);
+            }
+        }
 
         $pending = PengajuanCuti::where('user_id', $user->id)
             ->where('status', 'pending')
@@ -157,7 +190,6 @@ class PengajuanCutiController extends Controller
         }
 
         $buktiPath = null;
-
         if ($request->hasFile('bukti')) {
             $buktiPath = $request->file('bukti')->store('bukti-cuti', 'public');
         }
@@ -182,8 +214,7 @@ class PengajuanCutiController extends Controller
 
     public function edit($id)
     {
-        $cuti = PengajuanCuti::where('user_id', Auth::id())
-            ->findOrFail($id);
+        $cuti = PengajuanCuti::where('user_id', Auth::id())->findOrFail($id);
 
         if ($cuti->status != 'pending') {
             return redirect()->route('riwayat.cuti')->with('alert', [
@@ -193,13 +224,14 @@ class PengajuanCutiController extends Controller
             ]);
         }
 
-        return view('employee.pengajuan_cuti_edit', compact('cuti'));
+        // WAJIB: Kirim sisa kuota ke form edit untuk kalkulasi ulang JavaScript
+        $sisaCuti = $this->hitungSisaCuti(Auth::user());
+        return view('employee.pengajuan_cuti_edit', compact('cuti', 'sisaCuti'));
     }
 
     public function update(Request $request, $id)
     {
-        $cuti = PengajuanCuti::where('user_id', Auth::id())
-            ->findOrFail($id);
+        $cuti = PengajuanCuti::where('user_id', Auth::id())->findOrFail($id);
 
         if ($cuti->status != 'pending') {
             return back()->with('alert', [
@@ -211,14 +243,25 @@ class PengajuanCutiController extends Controller
 
         $this->validasiCuti($request);
 
-        $jumlahHari = Carbon::parse($request->tanggal_mulai)
-            ->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
+        $mulai = Carbon::parse($request->tanggal_mulai);
+        $jumlahHari = $mulai->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
+
+        // Validasi tambahan backend saat update data
+        if ($request->jenis_cuti === 'cuti_tahunan') {
+            $sisaCuti = $this->hitungSisaCuti(Auth::user());
+            if ($jumlahHari > $sisaCuti) {
+                return back()->withInput()->with('alert', [
+                    'type' => 'error',
+                    'title' => 'Gagal Memperbarui',
+                    'message' => "Jumlah hari baru ($jumlahHari hari) melebihi jatah sisa cuti Anda ($sisaCuti hari).",
+                ]);
+            }
+        }
 
         if ($request->hasFile('bukti')) {
             if ($cuti->bukti) {
                 Storage::disk('public')->delete($cuti->bukti);
             }
-
             $cuti->bukti = $request->file('bukti')->store('bukti-cuti', 'public');
         }
 
@@ -240,8 +283,7 @@ class PengajuanCutiController extends Controller
 
     public function destroy($id)
     {
-        $cuti = PengajuanCuti::where('user_id', Auth::id())
-            ->findOrFail($id);
+        $cuti = PengajuanCuti::where('user_id', Auth::id())->findOrFail($id);
 
         if ($cuti->status != 'pending') {
             return back()->with('alert', [
@@ -271,7 +313,4 @@ class PengajuanCutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'alasan' => 'required|string|max:500',
-            'bukti' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-        ]);
-    }
-}
+            'bukti' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',]);}}

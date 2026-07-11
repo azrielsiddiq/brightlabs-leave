@@ -178,6 +178,23 @@
             font-size: 14px;
             vertical-align: middle;
         }
+        .btn-modern {
+            background: #64748b; /* abu kebiruan elegan */
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 10px 24px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-modern:hover {
+            background: #475569; /* abu lebih gelap saat hover */
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
+        }
     </style>
 
     <div class="container-fluid py-4 px-3 px-md-4">
@@ -193,7 +210,7 @@
                                 Pantau pengajuan cuti anggota tim dan perkembangan aktivitas departemen Anda.
                             </div>
                         </div>
-                        <a href="#" class="btn btn-primary px-4">Daftar Cuti</a>
+                        <a href="#" class="btn btn-modern px-3">Daftar Cuti</a>
                     </div>
                 </div>
             </div>
