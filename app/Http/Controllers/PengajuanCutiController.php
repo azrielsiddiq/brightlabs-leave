@@ -11,12 +11,8 @@ use Illuminate\Support\Facades\Storage;
 
 class PengajuanCutiController extends Controller
 {
-    // Konstanta kuota cuti tahunan agar mudah diatur jika berubah
     private const TOTAL_CUTI_TAHUNAN = 12;
 
-    /**
-     * Helper untuk menghitung sisa cuti tahunan user yang aktif saat ini.
-     */
     private function hitungSisaCuti($user)
     {
         $cutiDipakai = PengajuanCuti::where('user_id', $user->id)
@@ -133,8 +129,8 @@ class PengajuanCutiController extends Controller
 
     public function create()
     {
-        // WAJIB: Kirim sisa kuota ke form create untuk digunakan oleh JavaScript
         $sisaCuti = $this->hitungSisaCuti(Auth::user());
+
         return view('employee.pengajuan_cuti_create', compact('sisaCuti'));
     }
 
@@ -147,15 +143,32 @@ class PengajuanCutiController extends Controller
         return view('employee.riwayat_cuti', compact('cutiSaya'));
     }
 
+    private function hitungHariKerja($tanggalMulai, $tanggalSelesai)
+    {
+        $mulai = Carbon::parse($tanggalMulai);
+        $selesai = Carbon::parse($tanggalSelesai);
+
+        $hariKerja = 0;
+
+        while ($mulai->lte($selesai)) {
+            if (! $mulai->isWeekend()) {
+                $hariKerja++;
+            }
+
+            $mulai->addDay();
+        }
+
+        return $hariKerja;
+    }
+
     public function store(Request $request)
     {
         $this->validasiCuti($request);
 
         $user = Auth::user();
 
-        // Validasi tambahan backend: Mengunci tanggal mulai agar tidak bisa mundur ke masa lalu
         $mulai = Carbon::parse($request->tanggal_mulai);
-        if ($mulai->isPast() && !$mulai->isToday()) {
+        if ($mulai->isPast() && ! $mulai->isToday()) {
             return back()->withInput()->with('alert', [
                 'type' => 'error',
                 'title' => 'Tanggal Tidak Valid',
@@ -163,18 +176,58 @@ class PengajuanCutiController extends Controller
             ]);
         }
 
+        $sedangCuti = PengajuanCuti::where('user_id', $user->id)->where('status', 'approved')->whereDate('tanggal_mulai', '<=', now())->whereDate('tanggal_selesai', '>=', now())->exists();
+
+        if ($sedangCuti) {
+            return back()->withInput()->with('alert', [
+                'type' => 'error',
+                'title' => 'Pengajuan Ditolak',
+                'message' => 'Anda sedang menjalani cuti dan baru dapat mengajukan cuti kembali setelah cuti saat ini selesai.',
+            ]);
+        }
+
         $jumlahHari = $mulai->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
 
-        // Validasi tambahan backend: Cek kuota sisa cuti jika memilih tipe cuti tahunan
-        if ($request->jenis_cuti === 'cuti_tahunan') {
-            $sisaCuti = $this->hitungSisaCuti($user);
-            if ($jumlahHari > $sisaCuti) {
+        if ($request->jenis_cuti === 'cuti_penting') {
+
+            $hariKerja = $this->hitungHariKerja(
+                $request->tanggal_mulai,
+                $request->tanggal_selesai
+            );
+
+            if ($hariKerja > 3) {
                 return back()->withInput()->with('alert', [
                     'type' => 'error',
                     'title' => 'Pengajuan Ditolak',
-                    'message' => "Jumlah pengajuan ($jumlahHari hari) melebihi jatah sisa cuti Anda ($sisaCuti hari).",
+                    'message' => 'Cuti penting maksimal 3 hari kerja.',
                 ]);
             }
+        }
+
+        $cutiBentrok = PengajuanCuti::where('user_id', $user->id)
+            ->whereIn('status', ['approved', 'pending'])
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('tanggal_mulai', [
+                    $request->tanggal_mulai,
+                    $request->tanggal_selesai,
+                ])
+                    ->orWhereBetween('tanggal_selesai', [
+                        $request->tanggal_mulai,
+                        $request->tanggal_selesai,
+                    ])
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('tanggal_mulai', '<=', $request->tanggal_mulai)
+                            ->where('tanggal_selesai', '>=', $request->tanggal_selesai);
+                    });
+            })
+            ->exists();
+
+        if ($cutiBentrok) {
+            return back()->withInput()->with('alert', [
+                'type' => 'error',
+                'title' => 'Pengajuan Ditolak',
+                'message' => 'Tanggal yang dipilih bertabrakan dengan pengajuan cuti yang sudah ada.',
+            ]);
         }
 
         $pending = PengajuanCuti::where('user_id', $user->id)
@@ -224,8 +277,8 @@ class PengajuanCutiController extends Controller
             ]);
         }
 
-        // WAJIB: Kirim sisa kuota ke form edit untuk kalkulasi ulang JavaScript
         $sisaCuti = $this->hitungSisaCuti(Auth::user());
+
         return view('employee.pengajuan_cuti_edit', compact('cuti', 'sisaCuti'));
     }
 
@@ -246,14 +299,45 @@ class PengajuanCutiController extends Controller
         $mulai = Carbon::parse($request->tanggal_mulai);
         $jumlahHari = $mulai->diffInDays(Carbon::parse($request->tanggal_selesai)) + 1;
 
-        // Validasi tambahan backend saat update data
-        if ($request->jenis_cuti === 'cuti_tahunan') {
-            $sisaCuti = $this->hitungSisaCuti(Auth::user());
-            if ($jumlahHari > $sisaCuti) {
+        $cutiBentrok = PengajuanCuti::where('user_id', Auth::id())
+            ->where('id', '!=', $cuti->id)
+            ->whereIn('status', ['approved', 'pending'])
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('tanggal_mulai', [
+                    $request->tanggal_mulai,
+                    $request->tanggal_selesai,
+                ])
+                    ->orWhereBetween('tanggal_selesai', [
+                        $request->tanggal_mulai,
+                        $request->tanggal_selesai,
+                    ])
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('tanggal_mulai', '<=', $request->tanggal_mulai)
+                            ->where('tanggal_selesai', '>=', $request->tanggal_selesai);
+                    });
+            })
+            ->exists();
+
+        if ($cutiBentrok) {
+            return back()->withInput()->with('alert', [
+                'type' => 'error',
+                'title' => 'Gagal Memperbarui',
+                'message' => 'Tanggal yang dipilih bertabrakan dengan pengajuan cuti yang sudah ada.',
+            ]);
+        }
+
+        if ($request->jenis_cuti === 'cuti_penting') {
+
+            $hariKerja = $this->hitungHariKerja(
+                $request->tanggal_mulai,
+                $request->tanggal_selesai
+            );
+
+            if ($hariKerja > 3) {
                 return back()->withInput()->with('alert', [
                     'type' => 'error',
                     'title' => 'Gagal Memperbarui',
-                    'message' => "Jumlah hari baru ($jumlahHari hari) melebihi jatah sisa cuti Anda ($sisaCuti hari).",
+                    'message' => 'Cuti penting maksimal 3 hari kerja.',
                 ]);
             }
         }
@@ -313,4 +397,6 @@ class PengajuanCutiController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'alasan' => 'required|string|max:500',
-            'bukti' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',]);}}
+            'bukti' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', ]);
+    }
+}
