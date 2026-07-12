@@ -42,15 +42,11 @@
                     
                     <div class="dropdown-divider-line"></div>
                     
-                    <a class="dropdown-item-flat" href="#">
-                        <i class="icon-wallet"></i>
-                        <span>Detail Akun</span>
+                    <a class="dropdown-item-flat" href="{{ route('profile.edit') }}#update_password_current_password">
+                        <i class="icon-lock"></i>
+                        <span>Ubah Password</span>
                     </a>
-                    
-                    <a class="dropdown-item-flat" href="#">
-                        <i class="icon-settings"></i>
-                        <span>Pengaturan</span>
-                    </a>
+
                     
                     <div class="dropdown-divider-line"></div>
                     

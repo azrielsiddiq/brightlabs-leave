@@ -226,7 +226,7 @@
                     @csrf
 
                     <div class="mb-4">
-                        <label class="field-label">Kategori Cuti</label>
+                        <label class="field-label">Kategori Cuti <span class="text-danger">*</span></label>
                         <select name="jenis_cuti" id="jenis_cuti" class="input-premium form-select" required>
                             <option value="">Pilih salah satu kategori</option>
                             <option value="cuti_tahunan" {{ old('jenis_cuti') == 'cuti_tahunan' ? 'selected' : '' }}>Cuti Tahunan</option>
@@ -238,23 +238,23 @@
                     <!-- STRUKTUR ROW TANGGAL SUDAH DIPERBAIKI & DIBERSIHKAN -->
                     <div class="row">
                         <div class="col-6 mb-4">
-                            <label class="field-label">Tanggal Mulai</label>
+                            <label class="field-label">Tanggal Mulai <span class="text-danger">*</span></label>
                             <input type="date" name="tanggal_mulai" id="tanggal_mulai" class="input-premium" value="{{ old('tanggal_mulai') }}" required>
                         </div>
 
                         <div class="col-6 mb-4">
-                            <label class="field-label">Tanggal Selesai</label>
+                            <label class="field-label">Tanggal Selesai <span class="text-danger">*</span></label>
                             <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="input-premium" value="{{ old('tanggal_selesai') }}" required>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <label class="field-label">Durasi Terhitung</label>
+                        <label class="field-label">Durasi Terhitung <span class="text-muted text-lowercase font-italic">(Terisi otomatis)</span></label>
                         <input type="text" id="jumlah_hari" class="input-premium" placeholder="Otomatis terhitung oleh sistem" readonly>
                     </div>
 
                     <div class="mb-2">
-                        <label class="field-label">Alasan Pengajuan</label>
+                        <label class="field-label">Alasan Pengajuan <span class="text-danger">*</span></label>
                         <textarea name="alasan" rows="4" class="input-premium" placeholder="Tuliskan komitmen atau alasan kebutuhan cuti Anda secara profesional" required>{{ old('alasan') }}</textarea>
                     </div>
 
@@ -290,10 +290,8 @@
     const tanggalSelesai = document.getElementById('tanggal_selesai');
     const jumlahHari = document.getElementById('jumlah_hari');
 
-    // Ambil data kuota sisa cuti dari Controller Laravel
     const sisaCutiKaryawan = {{ $sisaCuti ?? 12 }};
 
-    // 1. Kunci tanggal agar tidak bisa memilih hari ke belakang (minimal hari ini)
     const hariIni = new Date().toISOString().split("T")[0];
     tanggalMulai.min = hariIni;
 
@@ -306,7 +304,6 @@
     }
 
     function hitungJumlahHari() {
-        // Sinkronisasi: Tanggal selesai minimal harus sama dengan tanggal mulai
         if (tanggalMulai.value) {
             tanggalSelesai.min = tanggalMulai.value;
         }
@@ -319,28 +316,31 @@
         const mulai = new Date(tanggalMulai.value);
         const selesai = new Date(tanggalSelesai.value);
 
-        // Logika hitung total rentang hari
         const selisih = Math.ceil((selesai - mulai) / (1000 * 60 * 60 * 24)) + 1;
 
         if (selisih > 0) {
             jumlahHari.value = `${selisih} Hari Kerja`;
         } else {
             jumlahHari.value = '';
-            tanggalSelesai.value = ''; // Reset jika user memaksa tanggal terbalik
         }
     }
 
-    // 2. Logic Interseptor saat form akan dikirim ke server
     formCuti.addEventListener('submit', function(e) {
         if (jenisCuti.value === 'cuti_tahunan') {
             const mulai = new Date(tanggalMulai.value);
             const selesai = new Date(tanggalSelesai.value);
             const totalHari = Math.ceil((selesai - mulai) / (1000 * 60 * 60 * 24)) + 1;
 
-            // Jika pengajuan melampaui sisa jatah
             if (totalHari > sisaCutiKaryawan) {
-                e.preventDefault(); // Batalkan submit form
-                alert(`Pengajuan Gagal!\n\nAnda mencoba mengambil ${totalHari} hari cuti.\nSisa kuota Cuti Tahunan Anda saat ini tinggal ${sisaCutiKaryawan} hari.`);
+                e.preventDefault();
+                swal.fire({
+                    icon: 'error',
+                    title: 'Pengajuan Gagal',
+                    html: `Anda mencoba mengambil <strong>${totalHari}</strong> hari cuti.<br>Sisa kuota Cuti Tahunan Anda saat ini tinggal <strong>${sisaCutiKaryawan}</strong> hari.`,
+                    confirmButtonText: 'Mengerti',
+                    customClass: { confirmButton: 'btn btn-dark px-4 text-sm' },
+                    buttonsStyling: false
+                });
             }
         }
     });
@@ -349,7 +349,6 @@
     tanggalMulai.addEventListener('change', hitungJumlahHari);
     tanggalSelesai.addEventListener('change', hitungJumlahHari);
 
-    // Jalankan fungsi inisialisasi di awal halaman dimuat
     toggleBukti();
     hitungJumlahHari();
 </script>

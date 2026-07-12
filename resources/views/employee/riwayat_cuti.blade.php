@@ -248,7 +248,7 @@
                             <small class="text-muted" style="font-size: 12px;">Daftar seluruh berkas permohonan
                                 Anda</small>
                         </div>
-                        <span class="badge bg-dark px-2.5 py-1.5 rounded-pill font-monospace"
+                        <span class="badge px-2.5 py-1.5 rounded-pill font-monospace"
                             style="font-size: 11px;">Total: {{ $cutiSaya->total() }}</span>
                     </div>
                 </div>
