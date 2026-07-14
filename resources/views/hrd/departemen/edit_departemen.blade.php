@@ -98,7 +98,7 @@
 
                         </button>
 
-                        <a href="{{ route('departemen') }}"
+                        <a href="{{ route('hrd.departemen') }}"
                            class="btn btn-secondary">
 
                             Kembali
