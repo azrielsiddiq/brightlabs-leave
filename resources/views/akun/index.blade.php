@@ -109,23 +109,30 @@
             color: #ffffff !important;
         }
 
-        .table-custom th {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            font-weight: 600;
-            background-color: #f8fafc !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            padding: 12px 16px !important;
-        }
-
-        .table-custom td {
-            font-size: 0.875rem;
-            color: #334155;
-            padding: 14px 16px !important;
-            border-bottom: 1px solid #f1f5f9 !important;
-        }
+                @media (max-width: 768px) {
+            .table-custom thead {
+                display: none; /* sembunyikan header */
+            }
+            .table-custom tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 0.75rem;
+                background: #fff;
+            }
+            .table-custom td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 12px !important;
+                font-size: 0.8rem;
+            }
+            .table-custom td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #64748b;
+            }
+            }
 
         .hover-primary:hover {
             background-color: #f1f5f9 !important;
@@ -284,13 +291,13 @@
                             <tbody>
                                 @forelse ($users as $user)
                                     <tr style="transition: all 0.2s;">
-                                        <td>
+                                        <td data-label="Nama Pengguna">
                                             <div class="fw-bold text-dark" style="color: #1e293b;">
                                                 {{ $user->name }}
                                             </div>
                                         </td>
-                                        <td class="text-muted">{{ $user->email }}</td>
-                                        <td>
+                                        <td data-label="Email" class="text-muted">{{ $user->email }}</td>
+                                        <td data-label="Role">
                                             @if ($user->role == 'manager')
                                                 <span class="badge rounded-pill px-2.5 py-1 fw-bold"
                                                     style="font-size: 11px; background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;">
@@ -308,9 +315,10 @@
                                                 </span>
                                             @endif
                                         </td>
-                                        <td class="text-secondary">{{ $user->department?->nama_departemen ?? '-' }}
+                                        <td data-label="Departemen" class="text-secondary">
+                                            {{ $user->department?->nama_departemen ?? '-' }}
                                         </td>
-                                        <td class="text-end">
+                                        <td data-label="Aksi Berkas" class="text-end">
                                             <div class="d-inline-flex gap-2">
                                                 <a href="{{ route($routePrefix.'.user.edit', $user->id) }}"
                                                     class="btn p-0 d-flex align-items-center justify-content-center text-secondary hover-primary"
@@ -324,7 +332,7 @@
                                                         <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                                                     </svg>
                                                 </a>
-                                                
+
                                                 <form action="{{ route($routePrefix.'.user.destroy', $user->id) }}" method="POST"
                                                     method="POST" class="form-delete d-inline ml-2">
                                                     @csrf

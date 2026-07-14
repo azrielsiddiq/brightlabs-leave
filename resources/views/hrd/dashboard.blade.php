@@ -195,6 +195,31 @@
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
         }
+        @media (max-width: 768px) {
+  .modern-table thead {
+    display: none; /* sembunyikan header di mobile */
+  }
+  .modern-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: #fff;
+  }
+  .modern-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px !important;
+    font-size: 0.85rem;
+  }
+  .modern-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+  }
+}
+
     </style>
 
     <div class="container-fluid py-4 px-3 px-md-4">
@@ -254,7 +279,7 @@
             <div class="dashboard-title mb-3">Akses Cepat</div>
             <div class="row g-3">
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('hrd.daftar_cuti') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-calendar-days"></i></div>
                         <div>
                             <div class="fw-semibold">Daftar Cuti</div>
@@ -263,16 +288,16 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('hrd.departemen') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-clipboard-check"></i></div>
                         <div>
-                            <div class="fw-semibold">Status Cuti</div>
-                            <small class="text-muted">Pantau status</small>
+                            <div class="fw-semibold">Departemen</div>
+                            <small class="text-muted">Kelola departemen</small>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('pengumuman.index') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-bullhorn"></i></div>
                         <div>
                             <div class="fw-semibold">Pengumuman</div>
@@ -281,7 +306,7 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('hrd.user') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-user-plus"></i></div>
                         <div>
                             <div class="fw-semibold">Buat Akun</div>
@@ -310,29 +335,30 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @forelse($cuti as $item)
-                                    <tr>
-                                        <td>{{ $item->user->name ?? 'N/A' }}</td>
-                                        <td>{{ ucwords(str_replace('_', ' ', $item->jenis_cuti)) }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}</td>
-                                        <td>{{ $item->jumlah_hari }} Hari</td>
-                                        <td>
-                                            @if ($item->status == 'pending')
-                                                <span class="badge bg-warning text-dark status-badge">Pending</span>
-                                            @elseif($item->status == 'approved')
-                                                <span class="badge bg-success status-badge">Disetujui</span>
-                                            @else
-                                                <span class="badge bg-danger status-badge">Ditolak</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted">Belum ada pengajuan cuti.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+                       <tbody>
+                            @forelse($cuti as $item)
+                                <tr>
+                                    <td data-label="Karyawan">{{ $item->user->name ?? 'N/A' }}</td>
+                                    <td data-label="Jenis Cuti">{{ ucwords(str_replace('_', ' ', $item->jenis_cuti)) }}</td>
+                                    <td data-label="Tanggal">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}</td>
+                                    <td data-label="Durasi">{{ $item->jumlah_hari }} Hari</td>
+                                    <td data-label="Status">
+                                        @if ($item->status == 'pending')
+                                            <span class="badge bg-warning text-dark status-badge">Pending</span>
+                                        @elseif($item->status == 'approved')
+                                            <span class="badge bg-success status-badge">Disetujui</span>
+                                        @else
+                                            <span class="badge bg-danger status-badge">Ditolak</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Belum ada pengajuan cuti.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+
                         </table>
                     </div>
                 </div>
