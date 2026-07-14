@@ -16,7 +16,7 @@
 
             <div class="card-body">
 
-                <form action="{{ route('manager.pengumuman.update', $pengumuman->id) }}" method="POST">
+                <form action="{{ route('pengumuman.update', $pengumuman->id) }}" method="POST">
 
                     @csrf
                     @method('PUT')
@@ -72,7 +72,7 @@
 
                         </button>
 
-                        <a href="{{ route('manager.pengumuman') }}"
+                        <a href="{{ route('pengumuman.index') }}"
                            class="btn btn-secondary">
 
                             Kembali

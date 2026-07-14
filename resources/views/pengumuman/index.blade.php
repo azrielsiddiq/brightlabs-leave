@@ -245,7 +245,7 @@
                         <h4 class="fs-5 fw-bold text-navy-dark mb-0 ml-2">Buat Pengumuman Baru</h4>
                     </div>
 
-                    <form action="{{ route('manager.pengumuman.store') }}" method="POST">
+                    <form action="{{ route('pengumuman.store') }}" method="POST">
                         @csrf
                         <div class="row g-4">
                             <div class="col-12">
@@ -303,12 +303,11 @@
                                             </div>
 
                                             <div class="d-flex gap-1 flex-shrink-0">
-                                                <a href="{{ route('manager.pengumuman.edit', $item->id) }}"
+                                                <a href="{{ route('pengumuman.edit', $item->id) }}"
                                                     class="btn-circle-action text-warning" title="Edit">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </a>
-                                                <form action="{{ route('manager.pengumuman.destroy', $item->id) }}"
-                                                    method="POST" class="form-delete d-inline">
+                                                <form action="{{ route('pengumuman.destroy', $item->id) }}" method="POST">
 
                                                     @csrf
                                                     @method('DELETE')

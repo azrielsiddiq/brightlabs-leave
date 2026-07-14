@@ -445,11 +445,8 @@
                     <div class="p-4 announcement-container">
 
                         @forelse($pengumuman as $item)
-                            @php
-                                $isManager = $item->creator && $item->creator->role === 'manager';
-                            @endphp
 
-                            <div class="announcement-box mb-3 {{ $isManager ? 'manager-theme' : 'info-theme' }}">
+                            <div class="announcement-box mb-3">
 
                                 <div class="announcement-icon-wrapper">
                                     <i class="fa-solid fa-bullhorn"></i>

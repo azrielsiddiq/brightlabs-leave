@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::view('/test', 'manager.status_cuti')->name('manager.status_cuti');
 
 Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
     return view('auth.login');
 });
 
@@ -31,12 +34,6 @@ Route::middleware(['auth', 'role:hrd'])->group(function () {
 
     Route::get('/hrd/dashboard', [PengumumanController::class, 'DashboardHrd'])->name('hrd.dashboard');
 
-    Route::get('/hrd/pengumuman', [PengumumanController::class, 'index'])->name('hrd.pengumuman');
-    Route::post('/hrd/pengumuman', [PengumumanController::class, 'store'])->name('hrd.pengumuman.store');
-    Route::get('/hrd/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('hrd.pengumuman.edit');
-    Route::put('/hrd/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('hrd.pengumuman.update');
-    Route::delete('/hrd/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('hrd.pengumuman.destroy');
-
     Route::get('/hrd/departemen', [DepartemenController::class, 'index'])->name('hrd.departemen');
     Route::post('/hrd/departemen', [DepartemenController::class, 'store'])->name('hrd.departemen.store');
     Route::get('/hrd/departemen/{departemen}/edit', [DepartemenController::class, 'edit'])->name('hrd.departemen.edit');
@@ -55,15 +52,17 @@ Route::middleware(['auth', 'role:hrd'])->group(function () {
 
 });
 
+Route::middleware(['auth', 'role:manager,hrd'])->group(function () {
+
+    Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman.index');
+    Route::post('/pengumuman', [PengumumanController::class, 'store'])->name('pengumuman.store');
+    Route::get('/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('pengumuman.edit');
+    Route::put('/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('pengumuman.update');
+    Route::delete('/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('pengumuman.destroy');
+});
+
 // Manager
 Route::middleware(['auth', 'role:manager'])->group(function () {
-
-    Route::get('/manager/dashboard', [ManagerCutiController::class, 'dashboard'])->name('manager.dashboard');
-    Route::get('/manager/pengumuman', [PengumumanController::class, 'index'])->name('manager.pengumuman');
-    Route::post('/manager/pengumuman', [PengumumanController::class, 'store'])->name('manager.pengumuman.store');
-    Route::get('/manager/pengumuman/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('manager.pengumuman.edit');
-    Route::put('/manager/pengumuman/{pengumuman}', [PengumumanController::class, 'update'])->name('manager.pengumuman.update');
-    Route::delete('/manager/pengumuman/{pengumuman}', [PengumumanController::class, 'destroy'])->name('manager.pengumuman.destroy');
 
     Route::get('/manager/user', [UserController::class, 'index'])->name('manager.user');
     Route::post('/manager/user', [UserController::class, 'store'])->name('manager.user.store');
@@ -84,6 +83,8 @@ Route::middleware(['auth', 'role:karyawan'])->group(function () {
     Route::get('/cuti/{id}/edit', [PengajuanCutiController::class, 'edit'])->name('cuti.edit');
     Route::put('/cuti/{id}', [PengajuanCutiController::class, 'update'])->name('cuti.update');
     Route::delete('/cuti/{id}', [PengajuanCutiController::class, 'destroy'])->name('cuti.destroy');
+
+    Route::get('/employee/pengumuman', [PengumumanController::class, 'employeeIndex'])->name('employee.pengumuman');
 });
 
 // Profile

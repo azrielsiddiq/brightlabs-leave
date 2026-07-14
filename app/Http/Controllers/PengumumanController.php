@@ -28,6 +28,15 @@ class PengumumanController extends Controller
         ));
     }
 
+    public function employeeIndex()
+    {
+        $pengumuman = Pengumuman::with('creator')
+            ->latest()
+            ->get();
+
+        return view('employee.pengumuman', compact('pengumuman'));
+    }
+
     public function DashboardHrd()
     {
         $cuti = PengajuanCuti::with('user')

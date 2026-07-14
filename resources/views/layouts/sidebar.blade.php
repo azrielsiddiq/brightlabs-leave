@@ -55,7 +55,7 @@
             </li>
 
             <li>
-                <a href="{{ route('hrd.pengumuman') }}" class="waves-effect">
+                <a href="{{ route('pengumuman.index') }}" class="waves-effect">
                     <i class="icon-bell"></i>
                     <span>Pengumuman</span>
                 </a>
@@ -82,7 +82,7 @@
             </li>
 
             <li>
-                <a href="{{ route('manager.pengumuman') }}" class="waves-effect">
+                <a href="{{ route('pengumuman.index') }}" class="waves-effect">
                     <i class="icon-bell"></i>
                     <span>Pengumuman</span>
                 </a>
@@ -109,7 +109,7 @@
             </li>
 
             <li>
-                <a href="" class="waves-effect">
+                <a href="{{ route('employee.pengumuman') }}" class="waves-effect">
                     <i class="icon-bell"></i>
                     <span>Pengumuman</span>
                 </a>
