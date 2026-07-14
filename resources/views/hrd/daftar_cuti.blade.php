@@ -162,26 +162,34 @@
 
     <div class="container-fluid py-3 px-3 px-md-4" style="max-width: 1200px; margin: 0 auto;">
         <div class="stats-scroll hide-scrollbar mb-4">
-            <div class="stat-pill">
-                <div class="text-muted" style="font-size: 12px; font-weight: 600;">BUTUH REVIEW</div>
-                <div class="fw-bolder mt-1 text-dark" style="font-size: 24px;">
-                    {{ $cuti->where('status', 'pending')->count() }}</div>
-            </div>
-            <div class="stat-pill">
-                <div class="text-muted" style="font-size: 12px; font-weight: 600;">DISETUJUI (Bln Ini)</div>
-                <div class="fw-bolder mt-1 text-success" style="font-size: 24px;">
-                    {{ $cuti->where('status', 'approved')->count() }}</div>
-            </div>
-            <div class="stat-pill">
-                <div class="text-muted" style="font-size: 12px; font-weight: 600;">DITOLAK</div>
-                <div class="fw-bolder mt-1 text-danger" style="font-size: 24px;">
-                    {{ $cuti->where('status', 'rejected')->count() }}</div>
-            </div>
-            <div class="stat-pill">
-                <div class="text-muted" style="font-size: 12px; font-weight: 600;">TOTAL BERKAS</div>
-                <div class="fw-bolder mt-1 text-dark" style="font-size: 24px;">{{ $cuti->count() }}</div>
+            <div class="d-flex flex-wrap gap-3">
+                <div class="flex-fill stat-pill text-center p-3 border rounded" style="min-width: 200px;">
+                    <div class="text-muted" style="font-size: 12px; font-weight: 600;">BUTUH REVIEW</div>
+                    <div class="fw-bolder mt-1 text-dark" style="font-size: 24px;">
+                        {{ $cuti->where('status', 'pending')->count() }}
+                    </div>
+                </div>
+                <div class="flex-fill stat-pill text-center p-3 border rounded" style="min-width: 200px;">
+                    <div class="text-muted" style="font-size: 12px; font-weight: 600;">DISETUJUI (Bln Ini)</div>
+                    <div class="fw-bolder mt-1 text-success" style="font-size: 24px;">
+                        {{ $cuti->where('status', 'approved')->count() }}
+                    </div>
+                </div>
+                <div class="flex-fill stat-pill text-center p-3 border rounded" style="min-width: 200px;">
+                    <div class="text-muted" style="font-size: 12px; font-weight: 600;">DITOLAK</div>
+                    <div class="fw-bolder mt-1 text-danger" style="font-size: 24px;">
+                        {{ $cuti->where('status', 'rejected')->count() }}
+                    </div>
+                </div>
+                <div class="flex-fill stat-pill text-center p-3 border rounded" style="min-width: 200px;">
+                    <div class="text-muted" style="font-size: 12px; font-weight: 600;">TOTAL BERKAS</div>
+                    <div class="fw-bolder mt-1 text-dark" style="font-size: 24px;">
+                        {{ $cuti->count() }}
+                    </div>
+                </div>
             </div>
         </div>
+{{--
         <form method="GET" action="" class="mb-4">
             <div class="search-app-bar">
                 <i class="fa-solid fa-magnifying-glass text-muted ms-2"></i>
@@ -192,7 +200,7 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>
-        </form>
+        </form> --}}
 
         <div class="leave-grid pb-5">
 

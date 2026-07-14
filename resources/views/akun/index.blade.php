@@ -109,23 +109,7 @@
             color: #ffffff !important;
         }
 
-        .table-custom th {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #64748b;
-            font-weight: 600;
-            background-color: #f8fafc !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            padding: 12px 16px !important;
-        }
 
-        .table-custom td {
-            font-size: 0.875rem;
-            color: #334155;
-            padding: 14px 16px !important;
-            border-bottom: 1px solid #f1f5f9 !important;
-        }
 
         .hover-primary:hover {
             background-color: #f1f5f9 !important;
@@ -138,6 +122,55 @@
             color: #dc2626 !important;
             border-color: #fca5a5 !important;
         }
+
+.modern-table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    font-weight: 600;
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 12px 16px !important;
+}
+
+.modern-table td {
+    font-size: 0.875rem;
+    color: #334155;
+    padding: 14px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+    .modern-table thead {
+        display: none;
+    }
+    .modern-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.75rem;
+        background: #fff;
+    }
+    .modern-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px !important;
+        font-size: 0.8rem;
+    }
+    .modern-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #64748b;
+    }
+}
+
+
+
+
+
     </style>
 
     <div class="container-fluid py-4 px-4 mx-auto" style="max-width: 1300px;">
@@ -246,117 +279,102 @@
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="card-custom">
-                    <div class="border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="p-1.5 rounded bg-light border text-secondary d-flex align-items-center"
-                                style="width: 28px; height: 28px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                </svg>
-                            </div>
-                            <h4 class="fw-bold text-dark mb-0" style="font-size: 14px; color: #0f172a;">Daftar
-                                Pengguna Aktif</h4>
-                        </div>
-                        <span class="badge fw-semibold px-2.5 py-1 text-secondary bg-light border"
-                            style="font-size: 11px; border-radius: 6px;">
-                            Total: {{ count($users) }} Akun
-                        </span>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-borderless align-middle table-custom mb-0">
-                            <thead>
-                                <tr>
-                                    <th>Nama Pengguna</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Departemen</th>
-                                    <th class="text-end" style="width: 140px;">Aksi Berkas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($users as $user)
-                                    <tr style="transition: all 0.2s;">
-                                        <td>
-                                            <div class="fw-bold text-dark" style="color: #1e293b;">
-                                                {{ $user->name }}
-                                            </div>
-                                        </td>
-                                        <td class="text-muted">{{ $user->email }}</td>
-                                        <td>
-                                            @if ($user->role == 'manager')
-                                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
-                                                    style="font-size: 11px; background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;">
-                                                    Manager
-                                                </span>
-                                            @elseif($user->role == 'hrd')
-                                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
-                                                    style="font-size: 11px; background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;">
-                                                    HRD
-                                                </span>
-                                            @else
-                                                <span class="badge rounded-pill px-2.5 py-1 fw-bold"
-                                                    style="font-size: 11px; background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;">
-                                                    Karyawan
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="text-secondary">{{ $user->department?->nama_departemen ?? '-' }}
-                                        </td>
-                                        <td class="text-end">
-                                            <div class="d-inline-flex gap-2">
-                                                <a href="{{ route($routePrefix.'.user.edit', $user->id) }}"
-                                                    class="btn p-0 d-flex align-items-center justify-content-center text-secondary hover-primary"
-                                                    title="Ubah Akses Akun"
-                                                    style="border: 1px solid #e2e8f0; border-radius: 6px; width: 32px; height: 32px; background: #fff; transition: all 0.15s ease-in-out;">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13"
-                                                        height="13" viewBox="0 0 24 24" fill="none"
-                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round">
-                                                        <path d="M12 20h9" />
-                                                        <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                                                    </svg>
-                                                </a>
-                                                
-                                                <form action="{{ route($routePrefix.'.user.destroy', $user->id) }}" method="POST"
-                                                    method="POST" class="form-delete d-inline ml-2">
-                                                    @csrf
-                                                    @method('DELETE')
-
-                                                    <button type="button" class="btn btn-danger btn-sm btn-delete">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted py-5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round" class="mb-2">
-                                                <circle cx="12" cy="12" r="10" />
-                                                <path d="m15 9-6 6" />
-                                                <path d="m9 9 6 6" />
-                                            </svg>
-                                            <p class="mb-0 fw-medium small">Belum ada data pengguna internal perusahaan
-                                                yang terdaftar.</p>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+    <div class="col-12">
+    <div class="card-custom">
+        <!-- Header -->
+        <div class="border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <div class="p-1.5 rounded bg-light border text-secondary d-flex align-items-center"
+                    style="width: 28px; height: 28px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
                 </div>
+                <h4 class="fw-bold text-dark mb-0" style="font-size: 14px;">Daftar Pengguna Aktif</h4>
             </div>
+            <span class="badge fw-semibold px-2.5 py-1 text-secondary bg-light border"
+                style="font-size: 11px; border-radius: 6px;">
+                Total: {{ count($users) }} Akun
+            </span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle modern-table mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nama Pengguna</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Departemen</th>
+                        <th class="text-end" style="width: 140px;">Aksi Berkas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($users as $user)
+                        <tr>
+                            <td data-label="Nama Pengguna" class="fw-bold text-dark">{{ $user->name }}</td>
+                            <td data-label="Email" class="text-muted">{{ $user->email }}</td>
+                            <td data-label="Role">
+                                @if ($user->role == 'manager')
+                                    <span class="badge rounded-pill fw-bold"
+                                        style="font-size: 11px; background-color: #dbeafe; color: #1e40af;">
+                                        Manager
+                                    </span>
+                                @elseif($user->role == 'hrd')
+                                    <span class="badge rounded-pill fw-bold"
+                                        style="font-size: 11px; background-color: #dcfce7; color: #166534;">
+                                        HRD
+                                    </span>
+                                @else
+                                    <span class="badge rounded-pill fw-bold"
+                                        style="font-size: 11px; background-color: #f1f5f9; color: #475569;">
+                                        Karyawan
+                                    </span>
+                                @endif
+                            </td>
+                            <td data-label="Departemen" class="text-secondary">{{ $user->department?->nama_departemen ?? '-' }}</td>
+                            <td data-label="Aksi Berkas" class="text-end">
+                                <div class="d-inline-flex gap-2">
+                                    <a href="{{ route($routePrefix.'.user.edit', $user->id) }}"
+                                        class="btn btn-light btn-sm border" title="Ubah Akses Akun">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <form action="{{ route($routePrefix.'.user.destroy', $user->id) }}" method="POST"
+                                        class="form-delete d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm btn-delete">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-5">
+                                <i class="fa-regular fa-circle-xmark fa-2x mb-2" style="color:#94a3b8;"></i>
+                                <p class="mb-0 fw-medium small">Belum ada data pengguna internal perusahaan yang terdaftar.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
 
         </div>
     </div>

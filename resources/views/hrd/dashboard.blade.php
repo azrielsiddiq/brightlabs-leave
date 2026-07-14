@@ -166,18 +166,63 @@
             font-size: 13px;
             color: #475569;
         }
+/* Table styling */
+.modern-table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    font-weight: 600;
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 12px 16px !important;
+}
 
-        .modern-table th {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+.modern-table td {
+    font-size: 0.875rem;
+    color: #334155;
+    padding: 14px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
 
-        .modern-table td {
-            font-size: 14px;
-            vertical-align: middle;
-        }
+/* Mobile view: ubah tabel jadi card list */
+@media (max-width: 768px) {
+    .modern-table thead {
+        display: none;
+    }
+    .modern-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.75rem;
+        background: #fff;
+    }
+    .modern-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px !important;
+        font-size: 0.8rem;
+    }
+    .modern-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    /* Pengumuman box lebih compact */
+    .announcement-box {
+        padding: 0.75rem !important;
+        font-size: 0.85rem;
+    }
+    .announcement-heading {
+        font-size: 0.9rem;
+    }
+    .announcement-desc {
+        font-size: 0.8rem;
+    }
+}
+
         .btn-modern {
             background: #64748b; /* abu kebiruan elegan */
             color: #fff;
@@ -254,7 +299,7 @@
             <div class="dashboard-title mb-3">Akses Cepat</div>
             <div class="row g-3">
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('hrd.daftar_cuti') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-calendar-days"></i></div>
                         <div>
                             <div class="fw-semibold">Daftar Cuti</div>
@@ -263,16 +308,16 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('hrd.departemen') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-clipboard-check"></i></div>
                         <div>
-                            <div class="fw-semibold">Status Cuti</div>
-                            <small class="text-muted">Pantau status</small>
+                            <div class="fw-semibold">Departemen</div>
+                            <small class="text-muted">Kelola departemen</small>
                         </div>
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('pengumuman.index') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-bullhorn"></i></div>
                         <div>
                             <div class="fw-semibold">Pengumuman</div>
@@ -281,7 +326,7 @@
                     </a>
                 </div>
                 <div class="col-md-3">
-                    <a href="#" class="quick-link">
+                    <a href="{{ route('hrd.user') }}" class="quick-link">
                         <div class="quick-icon"><i class="fa-solid fa-user-plus"></i></div>
                         <div>
                             <div class="fw-semibold">Buat Akun</div>
@@ -310,29 +355,30 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @forelse($cuti as $item)
-                                    <tr>
-                                        <td>{{ $item->user->name ?? 'N/A' }}</td>
-                                        <td>{{ ucwords(str_replace('_', ' ', $item->jenis_cuti)) }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}</td>
-                                        <td>{{ $item->jumlah_hari }} Hari</td>
-                                        <td>
-                                            @if ($item->status == 'pending')
-                                                <span class="badge bg-warning text-dark status-badge">Pending</span>
-                                            @elseif($item->status == 'approved')
-                                                <span class="badge bg-success status-badge">Disetujui</span>
-                                            @else
-                                                <span class="badge bg-danger status-badge">Ditolak</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted">Belum ada pengajuan cuti.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+                           <tbody>
+                            @forelse($cuti as $item)
+                                <tr>
+                                    <td data-label="Karyawan">{{ $item->user->name ?? 'N/A' }}</td>
+                                    <td data-label="Jenis Cuti">{{ ucwords(str_replace('_', ' ', $item->jenis_cuti)) }}</td>
+                                    <td data-label="Tanggal">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}</td>
+                                    <td data-label="Durasi">{{ $item->jumlah_hari }} Hari</td>
+                                    <td data-label="Status">
+                                        @if ($item->status == 'pending')
+                                            <span class="badge bg-warning text-dark status-badge">Pending</span>
+                                        @elseif($item->status == 'approved')
+                                            <span class="badge bg-success status-badge">Disetujui</span>
+                                        @else
+                                            <span class="badge bg-danger status-badge">Ditolak</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Belum ada pengajuan cuti.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+
                         </table>
                     </div>
                 </div>
