@@ -7,12 +7,17 @@ use App\Models\Pengumuman;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Departemen;
 
 class PengumumanController extends Controller
 {
-    public function dashboard()
+
+public function dashboard()
     {
-        $cuti = PengajuanCuti::with('user')
+        $pengajuanCuti = PengajuanCuti::with([
+            'user.department',
+            'approver',
+        ])
             ->latest()
             ->take(5)
             ->get();
@@ -22,9 +27,22 @@ class PengumumanController extends Controller
             ->take(3)
             ->get();
 
+        $totalKaryawan = User::count();
+        $totalDepartemen = Departemen::count();
+        $totalAnggotaTim = User::where('role', 'karyawan')->count();
+        $rejected = PengajuanCuti::where('status', 'rejected')->count();
+        $pending = PengajuanCuti::where('status', 'pending')->count();
+        $approved = PengajuanCuti::where('status', 'approved')->count();
+
         return view('manager.dashboard', compact(
-            'cuti',
-            'pengumuman'
+            'pengajuanCuti',
+            'pengumuman',
+            'totalAnggotaTim',
+            'totalKaryawan',
+            'totalDepartemen',
+            'rejected',
+            'pending',
+            'approved'
         ));
     }
 

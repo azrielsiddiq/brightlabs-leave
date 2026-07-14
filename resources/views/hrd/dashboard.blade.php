@@ -255,7 +255,7 @@
                                 Pantau pengajuan cuti anggota tim dan perkembangan aktivitas departemen Anda.
                             </div>
                         </div>
-                        <a href="#" class="btn btn-modern px-3">Daftar Cuti</a>
+                        {{-- <a href="#" class="btn btn-modern px-3">Daftar Cuti</a> --}}
                     </div>
                 </div>
             </div>

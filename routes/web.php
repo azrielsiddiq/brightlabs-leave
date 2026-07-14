@@ -63,6 +63,8 @@ Route::middleware(['auth', 'role:manager,hrd'])->group(function () {
 
 // Manager
 Route::middleware(['auth', 'role:manager'])->group(function () {
+   Route::get('/manager/dashboard', [PengumumanController::class, 'dashboard'])
+    ->name('manager.dashboard');
 
     Route::get('/manager/user', [UserController::class, 'index'])->name('manager.user');
     Route::post('/manager/user', [UserController::class, 'store'])->name('manager.user.store');
@@ -75,6 +77,7 @@ Route::middleware(['auth', 'role:manager'])->group(function () {
 
 // Karyawan
 Route::middleware(['auth', 'role:karyawan'])->group(function () {
+
 
     Route::get('/employee/dashboard', [PengajuanCutiController::class, 'dashboard'])->name('employee.dashboard');
     Route::get('/employee/cuti/create', [PengajuanCutiController::class, 'create'])->name('cuti.create');

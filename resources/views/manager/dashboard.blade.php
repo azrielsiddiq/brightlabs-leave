@@ -177,17 +177,31 @@
             color: #94a3b8;
         }
 
-        .modern-table th {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+       @media (max-width: 768px) {
+  .table-custom thead {
+    display: none; /* sembunyikan header */
+  }
+  .table-custom tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: #fff;
+  }
+  .table-custom td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px !important;
+    font-size: 0.85rem;
+  }
+  .table-custom td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #475569;
+  }
+}
 
-        .modern-table td {
-            font-size: 14px;
-            vertical-align: middle;
-        }
         .btn-modern {
             background: #64748b; /* abu kebiruan elegan */
             color: #fff;
@@ -213,7 +227,7 @@
         }
     </style>
 
-    <div class="container-fluid py-4 px-3 px-md-4">
+     <div class="container-fluid py-4 px-3 px-md-4">
 
         <div class="row g-3 mb-4">
 
@@ -249,191 +263,119 @@
 
         </div>
 
-        <div class="row g-3 mb-4">
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Karyawan</div>
-                    <div class="stat-value">{{ $totalKaryawan }}</div>
-                </div>
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="dashboard-card stat-box">
+                <div class="stat-label">Total Karyawan</div>
+                <div class="stat-value">{{ $totalAnggotaTim }}</div>
             </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Departemen</div>
-                    <div class="stat-value">{{ $totalDepartemen }}</div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Pending</div>
-                    <div class="stat-value">{{ $pending }}</div>
-                </div>
-            </div>
-
-            <div class="col-6 col-lg-3">
-                <div class="dashboard-card stat-box">
-                    <div class="stat-label">Disetujui</div>
-                    <div class="stat-value">{{ $approved }}</div>
-                </div>
-            </div>
-
         </div>
 
-        <div class="row g-4">
+        <div class="col-6 col-lg-3">
+            <div class="dashboard-card stat-box">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value">{{ $pending }}</div>
+            </div>
+        </div>
 
-            <div class="col-lg-8">
+        <div class="col-6 col-lg-3">
+            <div class="dashboard-card stat-box">
+                <div class="stat-label">Disetujui</div>
+                <div class="stat-value">{{ $approved }}</div>
+            </div>
+        </div>
 
-                <div class="dashboard-card">
+        <div class="col-6 col-lg-3">
+            <div class="dashboard-card stat-box">
+                <div class="stat-label">Ditolak</div>
+                <div class="stat-value">{{ $rejected }}</div>
+            </div>
+        </div>
+    </div>
 
-                    <div class="p-4 border-bottom">
-                        <div class="dashboard-title">
-                            Daftar Pengajuan Cuti Terbaru
-                        </div>
-
-                        <small class="text-muted">
-                            Menampilkan pengajuan cuti terbaru dari karyawan.
-                        </small>
-                    </div>
-
-                    <div class="table-responsive p-4">
-
-                        <table class="table modern-table mb-0">
-
-                            <thead>
-                                <tr>
-                                    <th>Karyawan</th>
-                                    <th>Departemen</th>
-                                    <th>Jenis Cuti</th>
-                                    <th>Tanggal</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @forelse($pengajuanCuti as $cuti)
-                                    <tr>
-                                        <td>{{ $cuti->user->name }}</td>
-
-                                        <td>
-                                            {{ $cuti->user->department->nama_departemen ?? '-' }}
-                                        </td>
-
-                                        <td>
-                                            {{ ucwords(str_replace('_', ' ', $cuti->jenis_cuti)) }}
-                                        </td>
-
-                                        <td>
-                                            {{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}
-                                        </td>
-
-                                        <td>
-                                            @if ($cuti->status == 'pending')
-                                                <span class="badge bg-warning text-dark">
-                                                    Pending
-                                                </span>
-                                            @elseif($cuti->status == 'approved')
-                                                <span class="badge bg-success">
-                                                    Disetujui
-                                                </span>
-                                            @elseif($cuti->status == 'rejected')
-                                                <span class="badge bg-danger">
-                                                    Ditolak
-                                                </span>
-                                            @else
-                                                <span class="badge bg-secondary">
-                                                    Dibatalkan
-                                                </span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center">
-                                            Belum ada pengajuan cuti.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
+ <div class="row g-4">
+    {{-- Daftar Pengajuan Cuti --}}
+    <div class="col-12 col-lg-8">
+        <div class="dashboard-card">
+            <div class="p-4 border-bottom">
+                <div class="dashboard-title">Daftar Pengajuan Cuti Terbaru</div>
+                <small class="text-muted">Menampilkan pengajuan cuti terbaru dari karyawan.</small>
             </div>
 
-            <div class="col-lg-4">
-
-                <div class="dashboard-card h-100">
-
-                    <div class="p-4 border-bottom">
-
-                        <div class="dashboard-title">
-                            Pengumuman
-                        </div>
-
-                        <small class="text-muted">
-                            Informasi terbaru perusahaan
-                        </small>
-
-                    </div>
-
-                    <div class="p-4 announcement-container">
-
-                        @forelse($pengumuman as $item)
-                            @php
-                                $isManager = $item->creator && $item->creator->role === 'manager';
-                            @endphp
-
-                            <div class="announcement-box mb-3 {{ $isManager ? 'manager-theme' : 'info-theme' }}">
-
-                                <div class="announcement-icon-wrapper">
-                                    <i class="fa-solid fa-bullhorn"></i>
-                                </div>
-
-                                <div class="flex-grow-1">
-
-                                    <div class="announcement-heading">
-                                        {{ $item->judul }}
-                                    </div>
-
-                                    <div class="announcement-desc">
-                                        {{ \Illuminate\Support\Str::limit($item->isi, 90) }}
-                                    </div>
-
-                                    <small class="text-muted d-block mt-2">
-                                        <i class="fa-regular fa-user me-1"></i>
-                                        {{ $item->creator->name }}
-                                        ({{ ucfirst($item->creator->role) }})
-                                    </small>
-
-                                    <small class="text-muted d-block">
-                                        <i class="fa-regular fa-calendar me-1"></i>
-                                        {{ $item->created_at->format('d M Y') }}
-                                    </small>
-
-                                </div>
-
-                            </div>
-
+            <div class="table-responsive p-4">
+                <table class="table modern-table mb-0 table-custom">
+                    <thead>
+                        <tr>
+                            <th>Karyawan</th>
+                            <th>Jenis Cuti</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($pengajuanCuti as $item)
+                            <tr>
+                                <td data-label="Karyawan">{{ $item->user->name }}</td>
+                                <td data-label="Jenis Cuti">{{ ucwords(str_replace('_', ' ', $item->jenis_cuti)) }}</td>
+                                <td data-label="Tanggal">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') }}</td>
+                                <td data-label="Status">
+                                    @if ($item->status == 'pending')
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    @elseif($item->status == 'approved')
+                                        <span class="badge bg-success">Disetujui</span>
+                                    @elseif($item->status == 'rejected')
+                                        <span class="badge bg-danger">Ditolak</span>
+                                    @else
+                                        <span class="badge bg-secondary">Dibatalkan</span>
+                                    @endif
+                                </td>
+                            </tr>
                         @empty
-
-                            <div class="text-center text-muted py-4">
-                                <i class="fa-solid fa-bullhorn fa-2x mb-3"></i>
-                                <p class="mb-0">Belum ada pengumuman.</p>
-                            </div>
+                            <tr>
+                                <td colspan="4" class="text-center">Belum ada pengajuan cuti.</td>
+                            </tr>
                         @endforelse
-
-                    </div>
-
-                </div>
-
+                    </tbody>
+                </table>
             </div>
-
         </div>
+    </div>
+
+    {{-- Pengumuman --}}
+    <div class="col-12 col-lg-4">
+        <div class="dashboard-card h-100">
+            <div class="p-4 border-bottom">
+                <div class="dashboard-title">Pengumuman</div>
+                <small class="text-muted">Informasi terbaru perusahaan</small>
+            </div>
+            <div class="p-4 announcement-container">
+                @forelse($pengumuman as $item)
+                    <div class="announcement-box mb-3 info-theme">
+                        <div class="announcement-icon-wrapper">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="announcement-heading">{{ $item->judul }}</div>
+                            <div class="announcement-desc">{{ \Illuminate\Support\Str::limit($item->isi, 90) }}</div>
+                            <small class="text-muted d-block mt-2">
+                                <i class="fa-regular fa-user me-1"></i>
+                                {{ $item->creator->name ?? 'System' }}
+                            </small>
+                            <small class="text-muted d-block">
+                                <i class="fa-regular fa-calendar me-1"></i>
+                                {{ $item->created_at->format('d M Y') }}
+                            </small>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-muted py-4">
+                        <i class="fa-solid fa-bullhorn fa-2x mb-3"></i>
+                        <p class="mb-0">Belum ada pengumuman.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
 
     </div>
 

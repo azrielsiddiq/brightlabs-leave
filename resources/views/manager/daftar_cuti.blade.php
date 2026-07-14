@@ -47,17 +47,31 @@
             color: #0f172a;
         }
 
-        .modern-table th {
-            font-size: 12px;
-            color: #64748b;
+     @media (max-width: 768px) {
+        .table-custom thead {
+            display: none;
+        }
+        .table-custom tr {
+            display: block;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.75rem;
+            background: #fff;
+        }
+        .table-custom td {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px !important;
+            font-size: 0.85rem;
+        }
+        .table-custom td::before {
+            content: attr(data-label);
             font-weight: 600;
-            text-transform: uppercase;
+            color: #475569;
         }
+    }
 
-        .modern-table td {
-            vertical-align: middle;
-            font-size: 14px;
-        }
 
         .status-badge {
             padding: 6px 12px;
@@ -151,7 +165,6 @@
                 </div>
             </form>
         </div>
-
         <div class="dashboard-card">
             <div class="p-4 border-bottom">
                 <div class="dashboard-title">Daftar Pengajuan Cuti</div>
@@ -159,7 +172,7 @@
             </div>
 
             <div class="table-responsive p-4">
-                <table class="table modern-table align-middle">
+                <table class="table modern-table align-middle table-custom">
                     <thead>
                         <tr>
                             <th>Nama Karyawan</th>
@@ -175,13 +188,13 @@
                     <tbody>
                         @forelse($pengajuanCuti as $cuti)
                             <tr>
-                                <td>{{ $cuti->user->name }}</td>
-                                <td>{{ $cuti->user->department->nama_departemen ?? '-' }}</td>
-                                <td>{{ ucwords(str_replace('_', ' ', $cuti->jenis_cuti)) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}</td>
-                                <td>{{ $cuti->jumlah_hari }} Hari</td>
-                                <td>
+                                <td data-label="Nama Karyawan">{{ $cuti->user->name }}</td>
+                                <td data-label="Departemen">{{ $cuti->user->department->nama_departemen ?? '-' }}</td>
+                                <td data-label="Jenis Cuti">{{ ucwords(str_replace('_', ' ', $cuti->jenis_cuti)) }}</td>
+                                <td data-label="Tanggal Mulai">{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}</td>
+                                <td data-label="Tanggal Selesai">{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}</td>
+                                <td data-label="Durasi">{{ $cuti->jumlah_hari }} Hari</td>
+                                <td data-label="Status">
                                     @if ($cuti->status == 'pending')
                                         <span class="badge bg-warning text-dark status-badge">Pending</span>
                                     @elseif($cuti->status == 'approved')
@@ -192,14 +205,16 @@
                                         <span class="badge bg-secondary status-badge">Dibatalkan</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td data-label="Aksi">
                                     <button type="button" class="btn btn-sm btn-light border" data-bs-toggle="modal"
-                                        data-bs-target="#detailCutiModal" data-nama="{{ $cuti->user->name }}"
+                                        data-bs-target="#detailCutiModal"
+                                        data-nama="{{ $cuti->user->name }}"
                                         data-departemen="{{ $cuti->user->department->nama_departemen ?? '-' }}"
                                         data-jenis="{{ ucwords(str_replace('_', ' ', $cuti->jenis_cuti)) }}"
                                         data-mulai="{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}"
                                         data-selesai="{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}"
-                                        data-durasi="{{ $cuti->jumlah_hari }} Hari" data-status="{{ $cuti->status }}"
+                                        data-durasi="{{ $cuti->jumlah_hari }} Hari"
+                                        data-status="{{ $cuti->status }}"
                                         data-alasan="{{ $cuti->alasan ?? 'Tidak ada alasan khusus yang dilampirkan.' }}">
                                         <i class="fa-solid fa-eye"></i>
                                     </button>
@@ -214,6 +229,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 
     {{-- MODAL DETAIL PENGAJUAN CUTI --}}

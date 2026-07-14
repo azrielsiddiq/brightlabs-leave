@@ -203,18 +203,50 @@
             color: #475569;
             line-height: 1.5;
         }
+.modern-table th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    font-weight: 600;
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 12px 16px !important;
+}
 
-        .modern-table th {
-            font-size: 12px;
-            color: #64748b;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
+.modern-table td {
+    font-size: 0.875rem;
+    color: #334155;
+    padding: 14px 16px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
 
-        .modern-table td {
-            font-size: 14px;
-            vertical-align: middle;
-        }
+/* Mobile view */
+@media (max-width: 768px) {
+    .modern-table thead {
+        display: none;
+    }
+    .modern-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.75rem;
+        background: #fff;
+    }
+    .modern-table td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 12px !important;
+        font-size: 0.8rem;
+    }
+    .modern-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #64748b;
+    }
+}
+
 
         .btn-modern {
             background: #64748b;
@@ -260,9 +292,9 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('cuti.create') }}" class="btn btn-modern px-3">
+                        {{-- <a href="{{ route('cuti.create') }}" class="btn btn-modern px-3">
                             Ajukan Cuti
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>
@@ -351,7 +383,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <a href="#pengumuman" class="quick-link">
+                    <a href="{{ route('employee.pengumuman') }}" class="quick-link">
                         <div class="quick-icon">
                             <i class="fa-solid fa-bell"></i>
                         </div>
@@ -393,33 +425,34 @@
                                 </tr>
                             </thead>
 
-                            <tbody>
-                                @forelse($cutiSaya as $cuti)
-                                    <tr>
-                                        <td>{{ ucfirst(str_replace('_', ' ', $cuti->jenis_cuti)) }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}</td>
-                                        <td>{{ $cuti->jumlah_hari }} Hari</td>
-                                        <td>
-                                            @if ($cuti->status == 'pending')
-                                                <span class="badge bg-warning text-dark status-badge">Pending</span>
-                                            @elseif($cuti->status == 'approved')
-                                                <span class="badge bg-success status-badge">Disetujui</span>
-                                            @elseif($cuti->status == 'rejected')
-                                                <span class="badge bg-danger status-badge">Ditolak</span>
-                                            @else
-                                                <span class="badge bg-secondary status-badge">Dibatalkan</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="5" class="text-center text-muted py-4">
-                                            Belum ada data pengajuan cuti.
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
+                          <tbody>
+                            @forelse($cutiSaya as $cuti)
+                                <tr>
+                                    <td data-label="Jenis">{{ ucfirst(str_replace('_', ' ', $cuti->jenis_cuti)) }}</td>
+                                    <td data-label="Mulai">{{ \Carbon\Carbon::parse($cuti->tanggal_mulai)->format('d M Y') }}</td>
+                                    <td data-label="Selesai">{{ \Carbon\Carbon::parse($cuti->tanggal_selesai)->format('d M Y') }}</td>
+                                    <td data-label="Durasi">{{ $cuti->jumlah_hari }} Hari</td>
+                                    <td data-label="Status">
+                                        @if ($cuti->status == 'pending')
+                                            <span class="badge bg-warning text-dark status-badge">Pending</span>
+                                        @elseif($cuti->status == 'approved')
+                                            <span class="badge bg-success status-badge">Disetujui</span>
+                                        @elseif($cuti->status == 'rejected')
+                                            <span class="badge bg-danger status-badge">Ditolak</span>
+                                        @else
+                                            <span class="badge bg-secondary status-badge">Dibatalkan</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        Belum ada data pengajuan cuti.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+
                         </table>
                     </div>
 
