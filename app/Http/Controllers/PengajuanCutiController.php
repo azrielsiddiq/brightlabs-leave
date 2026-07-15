@@ -125,13 +125,29 @@ class PengajuanCutiController extends Controller
         ]);
     }
 
-    public function daftarCutiHRD()
+   public function daftarCutiHRD(Request $request)
     {
-        $cuti = PengajuanCuti::with([
+        $query = PengajuanCuti::with([
             'user.department',
             'approver',
-        ])->latest()->get();
-
+        ]);
+ 
+        if ($request->filled('search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->search.'%');
+            });
+        }
+ 
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+ 
+        if ($request->filled('tanggal')) {
+            $query->whereDate('tanggal_mulai', $request->tanggal);
+        }
+ 
+        $cuti = $query->latest()->get();
+ 
         return view('hrd.daftar_cuti', compact('cuti'));
     }
 

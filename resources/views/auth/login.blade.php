@@ -138,7 +138,7 @@
 
     <div class="login-card">
         <div class="text-center mb-4">
-            <h1 class="fw-bold h4 mb-1">Selamat Datang Kembali</h1>
+            <h1 class="fw-bold h4 mb-1">Selamat Datang</h1>
             <p class="text-muted-custom">Silakan masuk ke akun Anda</p>
         </div>
 
@@ -150,7 +150,7 @@
                 <div class="input-group-custom">
                     <input type="email" name="email" value="{{ old('email') }}"
                            class="form-control-modern @error('email') is-invalid @enderror"
-                           placeholder="nama@perusahaan.com" required autofocus>
+                           placeholder="Masukan alamat email" required autofocus>
                     <i class="fa-regular fa-envelope"></i>
                 </div>
                 @error('email')

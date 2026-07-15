@@ -5,10 +5,10 @@
 
     <x-slot name="header">
         <div>
-            <h2 class="fw-bold mb-1" style="font-size:22px;">
+            <h2 class="fw-bold mb-1 header-title">
                 Daftar Cuti Tim
             </h2>
-            <p class="text-muted mb-0" style="font-size:14px;">
+            <p class="text-muted mb-0 header-subtitle">
                 Pantau seluruh pengajuan cuti anggota tim.
             </p>
         </div>
@@ -69,6 +69,7 @@
             content: attr(data-label);
             font-weight: 600;
             color: #475569;
+            word-break: break-word;
         }
     }
 
@@ -78,6 +79,7 @@
             border-radius: 50px;
             font-size: 12px;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .search-box {
@@ -94,74 +96,219 @@
         .search-box input {
             padding-left: 40px;
         }
+
+        .header-title {
+            font-size: 22px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+        }
+
+        .fs-7 {
+            font-size: 11px;
+        }
+
+        /* ===== Jarak dasar antar card & section, berlaku di semua ukuran layar ===== */
+        .row.g-3 {
+            --bs-gutter-x: 1.25rem;
+            --bs-gutter-y: 1.25rem;
+        }
+
+        .row.g-4 {
+            --bs-gutter-x: 1.25rem;
+            --bs-gutter-y: 1.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.75rem !important;
+        }
+
+        .dashboard-card.p-4 {
+            padding: 1.5rem !important;
+        }
+
+        .table-responsive.p-4 {
+            padding: 1.25rem 1.5rem 1.5rem !important;
+        }
+
+        /* ===== Filter form: field width dibatasi mulai tablet, full-width di HP ===== */
+        .filter-field-search,
+        .filter-field-select {
+            max-width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .filter-field-search {
+                max-width: 300px;
+            }
+
+            .filter-field-select {
+                max-width: 200px;
+            }
+        }
+
+        /* ===== Tablet & below ===== */
+        @media (max-width: 991.98px) {
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+
+        /* ===== Mobile (phones) ===== */
+        @media (max-width: 767.98px) {
+            .header-title {
+                font-size: 19px;
+            }
+
+            .header-subtitle {
+                font-size: 13px;
+            }
+
+            .dashboard-title {
+                font-size: 14px;
+            }
+
+            .stat-value {
+                font-size: 22px;
+            }
+
+            .stat-box {
+                padding: 16px;
+            }
+
+            /* jarak antar card & section dibuat lebih lega, jangan berdempetan */
+            .row.g-3 {
+                --bs-gutter-x: 1rem;
+                --bs-gutter-y: 1.1rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.6rem !important;
+            }
+
+            .dashboard-card.p-4 {
+                padding: 1.15rem !important;
+            }
+
+            .table-responsive.p-4 {
+                padding: 1.1rem !important;
+            }
+
+            /* jarak antar baris filter lebih lega saat semua field stack ke bawah */
+            .filter-row {
+                gap: 1.1rem !important;
+            }
+
+            .filter-row .d-flex {
+                gap: 1.1rem !important;
+            }
+
+            .announcement-box {
+                padding: 14px;
+                gap: 12px;
+            }
+
+            .announcement-container {
+                gap: 16px;
+            }
+
+            .announcement-heading {
+                font-size: 13px;
+            }
+
+            .announcement-desc {
+                font-size: 12px;
+            }
+        }
+
+        /* ===== Very small phones ===== */
+        @media (max-width: 380px) {
+            .stat-value {
+                font-size: 19px;
+            }
+
+            .header-title {
+                font-size: 17px;
+            }
+        }
     </style>
 
-    <div class="container-fluid py-4 px-4 mx-auto" style="max-width: 1300px;">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4 mx-auto" style="max-width: 1300px;">
 
         <div class="row g-3 mb-4">
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Pengajuan</div>
-                    <div class="stat-value">{{ $totalPengajuan }}</div>
+                    <div class="stat-label"><center>Total Pengajuan</center></div>
+                    <div class="stat-value"><center>{{ $totalPengajuan }}</center></div>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Pending</div>
-                    <div class="stat-value">{{ $pending }}</div>
+                    <div class="stat-label"><center>Pending</center></div>
+                    <div class="stat-value"><center>{{ $pending }}</center></div>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3 mt-2 mt-lg-0">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Disetujui</div>
-                    <div class="stat-value">{{ $approved }}</div>
+                    <div class="stat-label"><center>Disetujui</center></div>
+                    <div class="stat-value"><center>{{ $approved }}</center></div>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3 mt-2 mt-lg-0">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Ditolak</div>
-                    <div class="stat-value">{{ $rejected }}</div>
+                    <div class="stat-label"><center>Ditolak</center></div>
+                    <div class="stat-value"><center>{{ $rejected }}</center></div>
                 </div>
             </div>
         </div>
 
         <div class="dashboard-card p-4 mb-4">
             <form id="filterForm" action="{{ route('manager.daftar_cuti') }}" method="GET">
-                <div class="row g-3 align-items-end">
-                    <div class="col-md-5">
-                        <label class="form-label fw-semibold">Cari Karyawan</label>
+                <div
+                    class="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3 filter-row">
+                    <div class="w-100 filter-field-search">
+                        <label class="form-label fw-semibold text-uppercase fs-7" style="letter-spacing: 0.5px;">
+                            Cari Karyawan
+                        </label>
                         <div class="search-box">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             <input type="text" name="search" id="searchInput" class="form-control"
                                 placeholder="Cari nama karyawan..." value="{{ request('search') }}">
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Status</label>
-                        <select name="status" class="form-select" onchange="this.form.submit()">
-                            <option value="">Semua Status</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
-                            </option>
-                            <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Disetujui
-                            </option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Ditolak
-                            </option>
-                            <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>
-                                Dibatalkan</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <label class="form-label fw-semibold">Tanggal Mulai</label>
-                        <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}"
-                            onchange="this.form.submit()">
-                    </div>
-                    <div class="col-md-2">
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('manager.daftar_cuti') }}" class="btn btn-outline-danger">
-                                <i class="fa-solid fa-rotate-right me-1"></i> Reset Filter
-                            </a>
+
+                    <div class="d-flex flex-column flex-sm-row align-items-sm-end gap-3 justify-content-md-end w-100">
+
+                        <div class="w-100 filter-field-select ml-2 mr-2">
+                            <label class="form-label fw-semibold text-uppercase fs-7" style="letter-spacing: 0.5px;">
+                                Status
+                            </label>
+                            <select name="status" class="form-select" onchange="this.form.submit()">
+                                <option value="">Semua Status</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>
+                                    Pending
+                                </option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>
+                                    Disetujui</option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>
+                                    Ditolak
+                                </option>
+                                <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>
+                                    Dibatalkan</option>
+                            </select>
                         </div>
+
+                        <div class="w-100 filter-field-select">
+                            <label class="form-label fw-semibold text-uppercase fs-7" style="letter-spacing: 0.5px;">
+                                Tanggal Mulai
+                            </label>
+                            <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}"
+                                onchange="this.form.submit()">
+                        </div>
+
                     </div>
+
                 </div>
             </form>
         </div>
@@ -279,7 +426,7 @@
                             -
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
                     <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal"

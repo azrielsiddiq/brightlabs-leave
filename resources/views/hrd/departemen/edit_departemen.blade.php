@@ -1,6 +1,20 @@
 <x-app-layout>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#2563eb',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 
     <x-slot name="header">
         <h2 class="fw-bold">
@@ -29,13 +43,10 @@
                             Kode Departemen
                         </label>
 
-                        <input
-                            type="text"
-                            name="kode_departemen"
+                        <input type="text" name="kode_departemen"
                             class="form-control @error('kode_departemen') is-invalid @enderror"
                             value="{{ old('kode_departemen', $departemen->kode_departemen) }}"
-                            placeholder="Contoh: IT, HRD, FIN"
-                            required>
+                            placeholder="Contoh: IT, HRD, FIN" required>
 
                         @error('kode_departemen')
                             <div class="invalid-feedback">
@@ -51,13 +62,10 @@
                             Nama Departemen
                         </label>
 
-                        <input
-                            type="text"
-                            name="nama_departemen"
+                        <input type="text" name="nama_departemen"
                             class="form-control @error('nama_departemen') is-invalid @enderror"
                             value="{{ old('nama_departemen', $departemen->nama_departemen) }}"
-                            placeholder="Contoh: Teknologi Informasi"
-                            required>
+                            placeholder="Contoh: Teknologi Informasi" required>
 
                         @error('nama_departemen')
                             <div class="invalid-feedback">
@@ -73,12 +81,8 @@
                             Deskripsi Tugas / Fungsi
                         </label>
 
-                        <textarea
-                            name="deskripsi_tugas"
-                            rows="5"
-                            class="form-control @error('deskripsi_tugas') is-invalid @enderror"
-                            placeholder="Tuliskan tugas dan fungsi departemen..."
-                            required>{{ old('deskripsi_tugas', $departemen->deskripsi_tugas) }}</textarea>
+                        <textarea name="deskripsi_tugas" rows="5" class="form-control @error('deskripsi_tugas') is-invalid @enderror"
+                            placeholder="Tuliskan tugas dan fungsi departemen..." required>{{ old('deskripsi_tugas', $departemen->deskripsi_tugas) }}</textarea>
 
                         @error('deskripsi_tugas')
                             <div class="invalid-feedback">
@@ -88,9 +92,9 @@
 
                     </div>
 
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 justify-content-end">
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary mr-2">
 
                             <i class="fa-solid fa-floppy-disk me-1"></i>
 

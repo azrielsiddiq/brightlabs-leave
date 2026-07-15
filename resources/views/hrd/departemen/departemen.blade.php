@@ -1,6 +1,22 @@
 <x-app-layout>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'Lanjutkan',
+                customClass: {
+                    confirmButton: 'btn btn-dark px-4 text-sm'
+                },
+                showConfirmButton: true
+            });
+        </script>
+    @endif
 
     <x-slot name="header">
         <div class="py-2 page-header-wrapper">
@@ -178,29 +194,29 @@
 
     <div class="container-fluid py-4 px-4 mx-auto" style="max-width: 1300px;">
         <div class="row g-md-4 mb-5">
-            <div class="col-12 col-md-4 mb-3 mb-md-0">
+            <div class="col-12 col-md-4">
                 <div class="dashboard-card-soft info-card">
                     <div>
                         <div class="info-label">Total Departemen</div>
-                        <div class="info-number">12</div>
+                        <div class="info-number">{{ $statistik['total'] }}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-md-4 mb-3 mb-md-0">
+            <div class="col-12 col-md-4">
                 <div class="dashboard-card-soft info-card">
                     <div>
                         <div class="info-label">Total Karyawan</div>
-                        <div class="info-number">148</div>
+                        <div class="info-number">{{ $statistik['karyawan'] }}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-md-4 mb-3 mb-md-0">
+            <div class="col-12 col-md-4">
                 <div class="dashboard-card-soft info-card">
                     <div>
                         <div class="info-label">Departemen Baru (Bulan Ini)</div>
-                        <div class="info-number">1</div>
+                        <div class="info-number">{{ $statistik['bulanIni'] }}</div>
                     </div>
                 </div>
             </div>
@@ -346,20 +362,31 @@
                                                 </a>
 
                                                 <form action="{{ route('hrd.departemen.destroy', $item->id) }}"
-                                                    method="POST"
-                                                    onsubmit="return confirm('Yakin ingin menghapus departemen ini?')">
-
+                                                    method="POST">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit"
+                                                    <button type="button"
                                                         class="btn-circle-action text-danger border-0 bg-white"
-                                                        title="Hapus">
+                                                        title="Hapus"
+                                                        onclick="Swal.fire({
+                                                            title: 'Hapus Departemen?',
+                                                            text: 'Data yang dihapus tidak dapat dikembalikan.',
+                                                            icon: 'warning',
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: '#dc3545',
+                                                            cancelButtonColor: '#6c757d',
+                                                            confirmButtonText: 'Ya, Hapus',
+                                                            cancelButtonText: 'Batal'
+                                                        }).then((result) => {
+                                                            if(result.isConfirmed){
+                                                                this.closest('form').submit();
+                                                            }
+                                                        })">
 
                                                         <i class="fa-solid fa-trash"></i>
 
                                                     </button>
-
                                                 </form>
 
                                             </div>

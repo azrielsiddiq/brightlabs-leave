@@ -9,7 +9,9 @@
                 title: "{{ session('alert.title') }}",
                 text: "{{ session('alert.message') }}",
                 confirmButtonText: 'Lanjutkan',
-                customClass: { confirmButton: 'btn btn-dark px-4 text-sm' },
+                customClass: {
+                    confirmButton: 'btn btn-dark px-4 text-sm'
+                },
                 buttonsStyling: false
             });
         </script>

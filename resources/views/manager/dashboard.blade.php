@@ -123,19 +123,22 @@
             color: #166534;
         }
 
-        /* Manager */
         .manager-theme {
-            background: #fef2f2;
-            border-color: #fecaca;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
         }
 
         .manager-theme .announcement-icon-wrapper {
-            background: #fee2e2;
-            color: #b91c1c;
+            background: #0f172a;
+            color: #ffffff;
         }
 
         .manager-theme .announcement-tag {
-            color: #b91c1c;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
 
         .announcement-icon-wrapper {

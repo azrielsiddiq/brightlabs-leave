@@ -97,63 +97,68 @@
             gap: 16px;
             padding: 16px;
             border-radius: 10px;
+            border: 1px solid transparent;
+            transition: .2s;
+        }
+
+        .announcement-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .04);
+        }
+
+        /* HRD */
+        .info-theme {
             background: #f0fdf4;
-            border: 1px solid #dcfce7;
-        }
-
-        .manager-theme {
-            background: #fef2f2 !important;
-            border: 1px solid #fecaca !important;
-            border-left: 5px solid #dc2626 !important;
-        }
-
-        .manager-theme .announcement-icon-wrapper {
-            background: #fee2e2 !important;
-            color: #b91c1c !important;
-        }
-
-        .info-theme {
-            background: #f0fdf4 !important;
-            border: 1px solid #dcfce7 !important;
-            border-left: 5px solid #16a34a !important;
+            border-color: #dcfce7;
         }
 
         .info-theme .announcement-icon-wrapper {
-            background: #bbf7d0 !important;
-            color: #166534 !important;
+            background: #bbf7d0;
+            color: #166534;
+        }
+
+        .info-theme .announcement-tag {
+            color: #166534;
         }
 
         .manager-theme {
-            background: #fef2f2 !important;
-            border: 1px solid #fecaca !important;
-            border-left: 5px solid #dc2626 !important;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
         }
 
         .manager-theme .announcement-icon-wrapper {
-            background: #fee2e2 !important;
-            color: #b91c1c !important;
+            background: #0f172a;
+            color: #ffffff;
         }
 
-        .info-theme {
-            background: #f0fdf4 !important;
-            border: 1px solid #dcfce7 !important;
-            border-left: 5px solid #16a34a !important;
-        }
-
-        .info-theme .announcement-icon-wrapper {
-            background: #bbf7d0 !important;
-            color: #166534 !important;
+        .manager-theme .announcement-tag {
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
 
         .announcement-icon-wrapper {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
             display: flex;
-            align-items: center;
             justify-content: center;
-            background: #bbf7d0;
-            color: #166534;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .announcement-content {
+            flex: 1;
+        }
+
+        .announcement-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 2px;
         }
 
         .announcement-heading {
@@ -165,6 +170,15 @@
         .announcement-desc {
             font-size: 13px;
             color: #475569;
+            line-height: 1.5;
+            margin-top: 4px;
+            word-break: break-word;
+        }
+
+        .announcement-footer {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #94a3b8;
         }
 /* Table styling */
 .modern-table th {
@@ -224,7 +238,8 @@
 }
 
         .btn-modern {
-            background: #64748b; /* abu kebiruan elegan */
+            background: #64748b;
+            /* abu kebiruan elegan */
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -236,7 +251,7 @@
         }
 
         .btn-modern:hover {
-            background: #475569; /* abu lebih gelap saat hover */
+            background: #475569;
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
         }
@@ -271,20 +286,32 @@
         <div class="row g-3 mb-4">
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label"><center>Total akun</center></div>
-                    <div class="stat-value"><center>{{ $totalAnggotaTim }}</center></div>
+                    <div class="stat-label">
+                        <center>Total akun</center>
+                    </div>
+                    <div class="stat-value">
+                        <center>{{ $totalAnggotaTim }}</center>
+                    </div>
                 </div>
             </div>
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label"><center>Pending</center></div>
-                    <div class="stat-value text-warning"><center>{{ $pending }}</center></div>
+                    <div class="stat-label">
+                        <center>Pending</center>
+                    </div>
+                    <div class="stat-value text-black">
+                        <center>{{ $pending }}</center>
+                    </div>
                 </div>
             </div>
             <div class="col-6 col-lg-3 mt-3 mt-lg-0">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label"><center>Disetujui</center></div>
-                    <div class="stat-value text-success"><center>{{ $approved }}</center></div>
+                    <div class="stat-label">
+                        <center>Disetujui</center>
+                    </div>
+                    <div class="stat-value text-black">
+                        <center>{{ $approved }}</center>
+                    </div>
                 </div>
             </div>
             <div class="col-6 col-lg-3 mt-3 mt-lg-0">
@@ -384,24 +411,36 @@
                 </div>
             </div>
 
-            <div class="col-lg-4 mt-5 mt-lg-0">
+            <div class="col-12 col-lg-4 mt-5 mt-lg-0">
+
                 <div class="dashboard-card h-100">
+
                     <div class="p-4 border-bottom">
-                        <div class="dashboard-title">Pengumuman</div>
-                        <small class="text-muted">Informasi terbaru perusahaan.</small>
+
+                        <div class="dashboard-title">
+                            Pengumuman
+                        </div>
+
+                        <small class="text-muted">
+                            Informasi terbaru perusahaan
+                        </small>
+
                     </div>
-                    <div class="p-4 announcement-container">
+
+                    <div class="announcement-container p-4">
 
                         @forelse($pengumuman as $item)
-
-
-                            <div class="announcement-box mb-3">
+                            <div class="announcement-box manager-theme">
 
                                 <div class="announcement-icon-wrapper">
                                     <i class="fa-solid fa-bullhorn"></i>
                                 </div>
 
-                                <div class="flex-grow-1">
+                                <div class="announcement-content">
+
+                                    <div class="announcement-tag">
+                                        Pengumuman
+                                    </div>
 
                                     <div class="announcement-heading">
                                         {{ $item->judul }}
@@ -411,16 +450,17 @@
                                         {{ \Illuminate\Support\Str::limit($item->isi, 90) }}
                                     </div>
 
-                                    <small class="text-muted d-block mt-2">
-                                        <i class="fa-regular fa-user me-1"></i>
-                                        {{ optional($item->creator)->name ?? 'Tidak diketahui' }}
+                                    <div class="announcement-footer">
+                                        <small class="text-muted d-block">
+                                            <i class="fa-regular fa-user me-1"></i>
+                                            {{ $item->creator->name }}
+                                        </small>
 
-                                    </small>
-
-                                    <small class="text-muted d-block">
-                                        <i class="fa-regular fa-calendar me-1"></i>
-                                        {{ $item->created_at->format('d M Y') }}
-                                    </small>
+                                        <small class="text-muted d-block">
+                                            <i class="fa-regular fa-calendar me-1"></i>
+                                            {{ $item->created_at->format('d M Y') }}
+                                        </small>
+                                    </div>
 
                                 </div>
 
@@ -435,7 +475,9 @@
                         @endforelse
 
                     </div>
+
                 </div>
+
             </div>
         </div>
     </div>

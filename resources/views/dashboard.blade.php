@@ -43,33 +43,35 @@
                 </div>
 
                 <div class="col-12 col-lg-6 col-xl-3">
-          <div class="card bg-pattern-success">
-            <div class="card-body">
-              <div class="media">
-              <div class="media-body text-left">
-                <h4 class="text-white">87.5%</h4>
-                <span class="text-white">Total Revenue</span>
-              </div>
-              <div class="align-self-center w-circle-icon rounded-circle bg-contrast">
-                <i class="icon-pie-chart text-white"></i></div>
-            </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-lg-6 col-xl-3">
-          <div class="card bg-pattern-warning">
-            <div class="card-body">
-              <div class="media">
-              <div class="media-body text-left">
-                <h4 class="text-white">8400</h4>
-                <span class="text-white">New Users</span>
-              </div>
-              <div class="align-self-center w-circle-icon rounded-circle bg-contrast">
-                <i class="icon-user text-white"></i></div>
-            </div>
-            </div>
-          </div>
-        </div>
+                    <div class="card bg-pattern-success">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body text-left">
+                                    <h4 class="text-white">87.5%</h4>
+                                    <span class="text-white">Total Revenue</span>
+                                </div>
+                                <div class="align-self-center w-circle-icon rounded-circle bg-contrast">
+                                    <i class="icon-pie-chart text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6 col-xl-3">
+                    <div class="card bg-pattern-warning">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="media-body text-left">
+                                    <h4 class="text-white">8400</h4>
+                                    <span class="text-white">New Users</span>
+                                </div>
+                                <div class="align-self-center w-circle-icon rounded-circle bg-contrast">
+                                    <i class="icon-user text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- dst untuk Revenue & New Users -->
             </div>
 
@@ -81,7 +83,8 @@
                             Product Sales
                             <div class="card-action">
                                 <div class="dropdown">
-                                    <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
+                                    <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret"
+                                        data-toggle="dropdown">
                                         <i class="icon-options text-white"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
@@ -132,14 +135,16 @@
                                 <tbody>
                                     <tr>
                                         <td>Iphone 5</td>
-                                        <td><img src="{{ asset('assets/images/products/01.png') }}" class="product-img" alt="product img"></td>
+                                        <td><img src="{{ asset('assets/images/products/01.png') }}" class="product-img"
+                                                alt="product img"></td>
                                         <td>#9405822</td>
                                         <td><span class="badge gradient-quepal text-white shadow">Paid</span></td>
                                         <td>$ 1250.00</td>
                                         <td>03 Aug 2017</td>
                                         <td>
                                             <div class="progress shadow" style="height: 6px;">
-                                                <div class="progress-bar gradient-quepal" role="progressbar" style="width: 100%"></div>
+                                                <div class="progress-bar gradient-quepal" role="progressbar"
+                                                    style="width: 100%"></div>
                                             </div>
                                         </td>
                                     </tr>
@@ -156,8 +161,8 @@
 </x-app-layout>
 
 
-            {{-- Breeze default box --}}
-            {{-- <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6">
+{{-- Breeze default box --}}
+{{-- <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
                 </div>

@@ -154,7 +154,7 @@
             color: #475569;
             line-height: 1.6;
         }
-        
+
         .btn-navy-action {
             background-color: #1e2640 !important;
             color: #ffffff !important;
@@ -255,7 +255,7 @@
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label text-muted-cool small fw-bold mb-2">Isi Pengumuman</label>
+                                <label class="form-label text-muted-cool small fw-bold mb-2 mt-3">Isi Pengumuman</label>
                                 <textarea name="isi" rows="4" class="form-control form-input-soft"
                                     placeholder="Tuliskan rincian informasi secara detail di sini..." required></textarea>
                             </div>
@@ -307,7 +307,8 @@
                                                     class="btn-circle-action text-warning" title="Edit">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </a>
-                                                <form action="{{ route('pengumuman.destroy', $item->id) }}" method="POST">
+                                                <form action="{{ route('pengumuman.destroy', $item->id) }}"
+                                                    method="POST" class="form-delete">
 
                                                     @csrf
                                                     @method('DELETE')
@@ -343,32 +344,29 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.btn-delete');
+            document.querySelectorAll('.btn-delete').forEach(button => {
 
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const form = this.closest('.form-delete');
+                button.addEventListener('click', function() {
+
+                    const form = this.closest('form');
 
                     Swal.fire({
                         title: 'Apakah Anda yakin?',
-                        text: "Data pengumuman yang dihapus tidak dapat dikembalikan!",
+                        text: 'Data pengumuman yang dihapus tidak dapat dikembalikan!',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#1e2640', 
+                        confirmButtonColor: '#1e2640',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Ya, Hapus!',
-                        cancelButtonText: 'Batal',
-                        customClass: {
-                            confirmButton: 'btn btn-dark px-4 text-sm me-2',
-                            cancelButton: 'btn btn-danger px-4 text-sm'
-                        },
-                        buttonsStyling: false
+                        cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            form.submit(); 
+                            form.submit();
                         }
                     });
+
                 });
+
             });
         });
     </script>

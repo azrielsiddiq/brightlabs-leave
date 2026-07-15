@@ -202,10 +202,9 @@
         <form method="GET" action="" class="mb-4">
             <div class="search-app-bar">
                 <i class="fa-solid fa-magnifying-glass text-muted ms-2"></i>
-                <input type="text" name="search" class="form-control flex-grow-1"
+                <input type="text" name="search" id="searchInput" class="form-control flex-grow-1"
                     placeholder="Cari nama karyawan..." value="{{ request('search') }}">
-                <button type="submit" class="btn btn-dark rounded-circle"
-                    style="width: 40px; height: 40px; padding: 0;">
+                <button type="submit" class="btn btn-dark rounded-circle search-submit-btn">
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </div>

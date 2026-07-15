@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departemen;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DepartemenController extends Controller
@@ -13,7 +14,7 @@ class DepartemenController extends Controller
 
         $statistik = [
             'total' => Departemen::count(),
-            'karyawan' => 0,
+            'karyawan' => User::count(), 
             'bulanIni' => Departemen::whereMonth('created_at', now()->month)
                 ->whereYear('created_at', now()->year)
                 ->count(),

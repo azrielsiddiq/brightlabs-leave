@@ -214,7 +214,7 @@
                                 <line x1="16" y1="11" x2="22" y2="11" />
                             </svg>
                         </div>
-                        <h4 class="fw-bold text-dark mb-0" style="font-size: 14px; color: #0f172a;">Registrasi Akun Baru
+                        <h4 class="fw-bold text-dark mb-0 ml-3" style="font-size: 14px; color: #0f172a;">Registrasi Akun Baru
                         </h4>
                     </div>
 

@@ -251,7 +251,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-3 button-stack-mobile mt-4 pt-3" style="border-top: 1px solid var(--slate-200);">
-                            <a href="{{ route('riwayat.cuti') }}" class="btn-minimal btn-minimal-secondary">
+                            <a href="{{ route('riwayat.cuti') }}" class="btn-minimal btn-minimal-secondary mr-4">
                                 Batalkan
                             </a>
                             <button type="submit" class="btn-minimal btn-minimal-primary">

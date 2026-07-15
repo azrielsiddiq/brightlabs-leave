@@ -122,6 +122,7 @@
             gap: 12px;
         }
 
+
         .announcement-box {
             display: flex;
             gap: 16px;
@@ -137,15 +138,22 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
-        .announcement-box.manager-theme {
-            background-color: #fef2f2;
-            border-color: #fecaca;
-            border-left: 5px solid #dc2626;
+        .manager-theme {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
         }
 
-        .announcement-box.manager-theme .announcement-icon-wrapper {
-            background-color: #fee2e2;
-            color: #b91c1c;
+        .manager-theme .announcement-icon-wrapper {
+            background: #0f172a;
+            color: #ffffff;
+        }
+
+        .manager-theme .announcement-tag {
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
 
         .announcement-box.manager-theme .announcement-tag {
@@ -420,7 +428,7 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-lg-4 mt-3 mt-lg-0">
                 <div class="dashboard-card h-100 p-4">
                     <div class="d-flex justify-content-between mb-3">
                         <div>
@@ -447,29 +455,29 @@
         <div class="row g-3 mb-4">
             <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Cuti Tahunan</div>
-                    <div class="stat-value">{{ $totalCutiTahunan }}</div>
+                    <div class="stat-label"><center>Total Cuti Tahunan</center></div>
+                    <div class="stat-value"><center>{{ $totalCutiTahunan }}</center></div>
                 </div>
             </div>
 
             <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Sisa Cuti</div>
-                    <div class="stat-value">{{ $sisaCuti }}</div>
+                    <div class="stat-label"><center>Sisa Cuti</center></div>
+                    <div class="stat-value"><center>{{ $sisaCuti }}</center></div>
                 </div>
             </div>
 
-            <div class="col-6 col-md-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3 mt-2 mt-lg-0">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Pending</div>
-                    <div class="stat-value">{{ $pending }}</div>
+                    <div class="stat-label"><center>Pending</center></div>
+                    <div class="stat-value"><center>{{ $pending }}</center></div>
                 </div>
             </div>
 
-            <div class="col-6 col-md-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3 mt-2 mt-lg-0">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Disetujui</div>
-                    <div class="stat-value">{{ $approved }}</div>
+                    <div class="stat-label"><center>Disetujui</center></div>
+                    <div class="stat-value"><center>{{ $approved }}</center></div>
                 </div>
             </div>
         </div>
@@ -491,7 +499,7 @@
                     </a>
                 </div>
 
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-4 mt-2 mt-md-0">
                     <a href="{{ route('riwayat.cuti') }}" class="quick-link">
                         <div class="quick-icon">
                             <i class="fa-solid fa-clock-rotate-left"></i>
@@ -580,9 +588,9 @@
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4 mt-4 mt-lg-0">
+            <div class="col-12 col-lg-4 mt-5 mt-lg-0">
 
-                <div class="dashboard-card h-100" id="pengumuman">
+                <div class="dashboard-card h-100">
 
                     <div class="p-4 border-bottom">
 
@@ -596,17 +604,20 @@
 
                     </div>
 
-                    <div class="p-4 announcement-container">
+                    <div class="announcement-container p-4">
 
                         @forelse($pengumuman as $item)
-
-                            <div class="announcement-box mb-3">
+                            <div class="announcement-box manager-theme">
 
                                 <div class="announcement-icon-wrapper">
                                     <i class="fa-solid fa-bullhorn"></i>
                                 </div>
 
-                                <div class="flex-grow-1">
+                                <div class="announcement-content">
+
+                                    <div class="announcement-tag" style="color: #000000;">
+                                        Pengumuman
+                                    </div>
 
                                     <div class="announcement-heading">
                                         {{ $item->judul }}
@@ -616,16 +627,17 @@
                                         {{ \Illuminate\Support\Str::limit($item->isi, 90) }}
                                     </div>
 
-                                    <small class="text-muted d-block mt-2">
-                                        <i class="fa-regular fa-user me-1"></i>
-                                        {{ $item->creator->name }}
-                                        ({{ ucfirst($item->creator->role) }})
-                                    </small>
+                                    <div class="announcement-footer">
+                                        <small class="text-muted d-block">
+                                            <i class="fa-regular fa-user me-1"></i>
+                                            {{ $item->creator->name }}
+                                        </small>
 
-                                    <small class="text-muted d-block">
-                                        <i class="fa-regular fa-calendar me-1"></i>
-                                        {{ $item->created_at->format('d M Y') }}
-                                    </small>
+                                        <small class="text-muted d-block">
+                                            <i class="fa-regular fa-calendar me-1"></i>
+                                            {{ $item->created_at->format('d M Y') }}
+                                        </small>
+                                    </div>
 
                                 </div>
 

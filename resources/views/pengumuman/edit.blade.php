@@ -62,9 +62,9 @@
 
                     </div>
 
-                    <div class="d-flex gap-2">
+                    <div class="d-flex gap-2 justify-content-end">
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary mr-2">
 
                             <i class="fa-solid fa-floppy-disk me-1"></i>
 
