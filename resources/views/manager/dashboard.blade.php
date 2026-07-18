@@ -4,10 +4,10 @@
 
     <x-slot name="header">
         <div>
-            <h2 class="fw-bold mb-1" style="font-size:22px;">
+            <h2 class="fw-bold mb-1 header-title">
                 Dashboard HRD
             </h2>
-            <p class="text-muted mb-0" style="font-size:14px;">
+            <p class="text-muted mb-0 header-subtitle">
                 Kelola data karyawan, pengajuan cuti, departemen, dan informasi perusahaan.
             </p>
         </div>
@@ -77,6 +77,7 @@
             align-items: center;
             justify-content: center;
             color: #334155;
+            flex-shrink: 0;
         }
 
         .status-badge {
@@ -84,6 +85,7 @@
             font-size: 12px;
             border-radius: 50px;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .announcement-container {
@@ -169,6 +171,7 @@
             color: #475569;
             line-height: 1.5;
             margin-top: 4px;
+            word-break: break-word;
         }
 
         .announcement-footer {
@@ -203,7 +206,8 @@
 }
 
         .btn-modern {
-            background: #64748b; /* abu kebiruan elegan */
+            background: #64748b;
+            /* abu kebiruan elegan */
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -212,17 +216,123 @@
             padding: 10px 24px;
             transition: all 0.2s;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .btn-modern:hover {
-            background: #475569; /* abu lebih gelap saat hover */
+            background: #475569;
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
         }
 
-        @media(max-width:768px) {
+        .header-title {
+            font-size: 22px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+        }
+
+        /* ===== Tablet & below ===== */
+        @media (max-width: 991.98px) {
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+
+        /* ===== Mobile (phones) ===== */
+        @media (max-width: 767.98px) {
+            .header-title {
+                font-size: 19px;
+            }
+
+            .header-subtitle {
+                font-size: 13px;
+            }
+
+            .dashboard-title {
+                font-size: 14px;
+            }
+
+            .dashboard-subtitle {
+                font-size: 13px;
+                max-width: 100% !important;
+            }
+
             .stat-value {
                 font-size: 22px;
+            }
+
+            .stat-box {
+                padding: 16px;
+            }
+
+            /* beri jarak lebih lega antar card & antar section di mobile */
+            .row.g-3 {
+                --bs-gutter-x: 0.9rem;
+                --bs-gutter-y: 1rem;
+            }
+
+            .row.g-4 {
+                --bs-gutter-x: 0.9rem;
+                --bs-gutter-y: 1.25rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.5rem !important;
+            }
+
+            .quick-link {
+                padding: 14px;
+                gap: 12px;
+            }
+
+            .quick-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 13px;
+            }
+
+            .announcement-box {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .announcement-container {
+                gap: 14px;
+            }
+
+            .announcement-heading {
+                font-size: 13px;
+            }
+
+            .announcement-desc {
+                font-size: 12px;
+            }
+
+            .btn-modern {
+                width: 100%;
+                text-align: center;
+            }
+
+            .p-4 {
+                padding: 1.1rem !important;
+            }
+
+            .table-responsive.p-4,
+            .announcement-container.p-4 {
+                padding-top: 1rem !important;
+            }
+        }
+
+        /* ===== Very small phones ===== */
+        @media (max-width: 380px) {
+            .stat-value {
+                font-size: 19px;
+            }
+
+            .header-title {
+                font-size: 17px;
             }
         }
     </style>
@@ -231,7 +341,7 @@
 
         <div class="row g-3 mb-4">
 
-            <div class="col-lg-8">
+            <div class="col-12 col-lg-8">
                 <div class="dashboard-card h-100 p-4">
                     <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
                         <div>
@@ -249,7 +359,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4 mt-3 mt-lg-0">
                 <div class="dashboard-card h-100 p-4">
                     <div class="dashboard-title mb-2">
                         Ringkasan Sistem

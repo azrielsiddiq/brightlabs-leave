@@ -232,7 +232,7 @@
 
     </div>
 
-    {{-- MODAL DETAIL PENGAJUAN CUTI --}}
+
     <div class="modal fade" id="detailCutiModal" tabindex="-1" aria-labelledby="detailCutiModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -279,6 +279,7 @@
                             -
                         </div>
                     </div>
+                    
                 </div>
                 <div class="modal-footer border-top-0 px-4 pb-4 pt-0">
                     <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal"

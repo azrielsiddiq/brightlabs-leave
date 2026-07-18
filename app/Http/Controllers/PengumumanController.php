@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departemen;
 use App\Models\PengajuanCuti;
 use App\Models\Pengumuman;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Departemen;
 
 class PengumumanController extends Controller
 {
@@ -31,6 +31,7 @@ public function dashboard()
         $totalDepartemen = Departemen::count();
         $totalAnggotaTim = User::where('role', 'karyawan')->count();
         $rejected = PengajuanCuti::where('status', 'rejected')->count();
+
         $pending = PengajuanCuti::where('status', 'pending')->count();
         $approved = PengajuanCuti::where('status', 'approved')->count();
 
@@ -41,6 +42,8 @@ public function dashboard()
             'totalKaryawan',
             'totalDepartemen',
             'rejected',
+            'totalKaryawan',
+            'totalDepartemen',
             'pending',
             'approved'
         ));
@@ -135,7 +138,7 @@ public function dashboard()
             'isi' => $request->isi,
         ]);
 
-        return redirect()->route('manager.pengumuman')
+        return redirect()->route('pengumuman.index')
             ->with('alert', [
                 'type' => 'success',
                 'title' => 'Diperbarui!',

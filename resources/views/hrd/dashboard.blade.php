@@ -260,7 +260,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 mt-3 mt-lg-0">
                 <div class="dashboard-card h-100 p-4">
                     <div class="dashboard-title">Ringkasan Tim</div>
                     <small class="text-muted">Monitoring aktivitas anggota tim.</small>
@@ -271,23 +271,23 @@
         <div class="row g-3 mb-4">
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Total Anggota Tim</div>
-                    <div class="stat-value">{{ $totalAnggotaTim }}</div>
+                    <div class="stat-label"><center>Total akun</center></div>
+                    <div class="stat-value"><center>{{ $totalAnggotaTim }}</center></div>
                 </div>
             </div>
             <div class="col-6 col-lg-3">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Pending</div>
-                    <div class="stat-value text-warning">{{ $pending }}</div>
+                    <div class="stat-label"><center>Pending</center></div>
+                    <div class="stat-value text-warning"><center>{{ $pending }}</center></div>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-lg-3 mt-3 mt-lg-0">
                 <div class="dashboard-card stat-box">
-                    <div class="stat-label">Disetujui</div>
-                    <div class="stat-value text-success">{{ $approved }}</div>
+                    <div class="stat-label"><center>Disetujui</center></div>
+                    <div class="stat-value text-success"><center>{{ $approved }}</center></div>
                 </div>
             </div>
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-lg-3 mt-3 mt-lg-0">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Ditolak</div>
                     <div class="stat-value text-danger">{{ $rejected }}</div>
@@ -384,7 +384,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4 mt-5 mt-lg-0">
                 <div class="dashboard-card h-100">
                     <div class="p-4 border-bottom">
                         <div class="dashboard-title">Pengumuman</div>
@@ -393,12 +393,9 @@
                     <div class="p-4 announcement-container">
 
                         @forelse($pengumuman as $item)
-                            @php
-                                $role = strtolower(optional($item->creator)->role ?? '');
-                                $isManager = $role === 'manager';
-                            @endphp
 
-                            <div class="announcement-box mb-3 {{ $isManager ? 'manager-theme' : 'info-theme' }}">
+
+                            <div class="announcement-box mb-3">
 
                                 <div class="announcement-icon-wrapper">
                                     <i class="fa-solid fa-bullhorn"></i>
@@ -417,7 +414,7 @@
                                     <small class="text-muted d-block mt-2">
                                         <i class="fa-regular fa-user me-1"></i>
                                         {{ optional($item->creator)->name ?? 'Tidak diketahui' }}
-                                        ({{ ucfirst($role) }})
+
                                     </small>
 
                                     <small class="text-muted d-block">

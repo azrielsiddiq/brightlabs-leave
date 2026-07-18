@@ -22,10 +22,10 @@
 
     <x-slot name="header">
         <div>
-            <h2 class="fw-bold mb-1" style="font-size: 22px;">
+            <h2 class="fw-bold mb-1 header-title">
                 Dashboard Karyawan
             </h2>
-            <p class="text-muted mb-0" style="font-size: 14px;">
+            <p class="text-muted mb-0 header-subtitle">
                 Informasi pengajuan, sisa cuti, dan riwayat aktivitas Anda.
             </p>
         </div>
@@ -95,6 +95,7 @@
             align-items: center;
             justify-content: center;
             color: #334155;
+            flex-shrink: 0;
         }
 
         .progress {
@@ -112,6 +113,7 @@
             font-size: 12px;
             border-radius: 50px;
             font-weight: 500;
+            white-space: nowrap;
         }
 
         .announcement-container {
@@ -202,6 +204,7 @@
             font-size: 13px;
             color: #475569;
             line-height: 1.5;
+            word-break: break-word;
         }
 .modern-table th {
     font-size: 0.75rem;
@@ -250,7 +253,6 @@
 
         .btn-modern {
             background: #64748b;
-            /* abu kebiruan elegan */
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -259,28 +261,147 @@
             padding: 10px 24px;
             transition: all 0.2s;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .btn-modern:hover {
             background: #475569;
-            /* abu lebih gelap saat hover */
             transform: translateY(-1px);
             box-shadow: 0 6px 14px rgba(71, 85, 105, 0.25);
         }
 
+        .header-title {
+            font-size: 22px;
+        }
 
-        @media(max-width:768px) {
+        .header-subtitle {
+            font-size: 14px;
+        }
+
+        /* ===== Tablet & below ===== */
+        @media (max-width: 991.98px) {
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+
+        /* ===== Mobile (phones) ===== */
+        @media (max-width: 767.98px) {
+            .header-title {
+                font-size: 19px;
+            }
+
+            .header-subtitle {
+                font-size: 13px;
+            }
+
+            .dashboard-title {
+                font-size: 14px;
+            }
+
+            .dashboard-subtitle {
+                font-size: 13px;
+                max-width: 100% !important;
+            }
+
             .stat-value {
                 font-size: 22px;
+            }
+
+            .stat-box {
+                padding: 16px;
+            }
+
+            /* beri jarak lebih lega antar card & antar section di mobile */
+            .row.g-3 {
+                --bs-gutter-x: 0.9rem;
+                --bs-gutter-y: 1rem;
+            }
+
+            .row.g-4 {
+                --bs-gutter-x: 0.9rem;
+                --bs-gutter-y: 1.25rem;
+            }
+
+            .mb-4 {
+                margin-bottom: 1.5rem !important;
+            }
+
+            .quick-link {
+                padding: 14px;
+                gap: 12px;
+            }
+
+            .quick-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 13px;
+            }
+
+            .announcement-box {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .announcement-heading {
+                font-size: 13px;
+            }
+
+            .announcement-desc {
+                font-size: 12px;
+            }
+
+            .btn-modern {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* welcome card: stack text and button */
+            .welcome-header {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+
+            .welcome-header .btn-modern {
+                margin-top: 4px;
+            }
+
+            .p-4 {
+                padding: 1.1rem !important;
+            }
+
+            /* jarak antar kartu pengumuman & isi tabel jangan terlalu rapat */
+            .announcement-container {
+                gap: 14px;
+            }
+
+            .table-responsive.p-4,
+            .announcement-container.p-4 {
+                padding-top: 1rem !important;
+            }
+        }
+
+        /* ===== Very small phones ===== */
+        @media (max-width: 380px) {
+            .stat-value {
+                font-size: 19px;
+            }
+
+            .header-title {
+                font-size: 17px;
+            }
+
+            .quick-link .fw-semibold {
+                font-size: 14px;
             }
         }
     </style>
 
-    <div class="container-fluid py-4 px-3 px-md-4">
+    <div class="container-fluid py-3 py-md-4 px-3 px-md-4">
         <div class="row g-3 mb-4">
-            <div class="col-lg-8">
+            <div class="col-12 col-lg-8">
                 <div class="dashboard-card h-100 p-4">
-                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 welcome-header">
                         <div>
                             <div class="dashboard-title mb-2">
                                 Selamat datang, {{ auth()->user()->name }}
@@ -299,7 +420,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4">
                 <div class="dashboard-card h-100 p-4">
                     <div class="d-flex justify-content-between mb-3">
                         <div>
@@ -324,28 +445,28 @@
         </div>
 
         <div class="row g-3 mb-4">
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Total Cuti Tahunan</div>
                     <div class="stat-value">{{ $totalCutiTahunan }}</div>
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Sisa Cuti</div>
                     <div class="stat-value">{{ $sisaCuti }}</div>
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Pending</div>
                     <div class="stat-value">{{ $pending }}</div>
                 </div>
             </div>
 
-            <div class="col-6 col-lg-3">
+            <div class="col-6 col-md-6 col-lg-3">
                 <div class="dashboard-card stat-box">
                     <div class="stat-label">Disetujui</div>
                     <div class="stat-value">{{ $approved }}</div>
@@ -358,7 +479,7 @@
             <div class="dashboard-title mb-3">Akses Cepat</div>
 
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <a href="{{ route('cuti.create') }}" class="quick-link">
                         <div class="quick-icon">
                             <i class="fa-solid fa-file-signature"></i>
@@ -370,7 +491,7 @@
                     </a>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <a href="{{ route('riwayat.cuti') }}" class="quick-link">
                         <div class="quick-icon">
                             <i class="fa-solid fa-clock-rotate-left"></i>
@@ -397,10 +518,10 @@
         </div>
 
         <div class="row g-4">
-            <div class="col-lg-8">
+            <div class="col-12 col-lg-8">
                 <div class="dashboard-card h-100">
 
-                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div class="p-4 border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
                         <div>
                             <div class="dashboard-title">Riwayat Pengajuan Terbaru</div>
                             <small class="text-muted">
@@ -459,9 +580,9 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4 mt-4 mt-lg-0">
 
-                <div class="dashboard-card h-100">
+                <div class="dashboard-card h-100" id="pengumuman">
 
                     <div class="p-4 border-bottom">
 

@@ -4,6 +4,15 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    @if (session('alert'))
+        <script>
+            Swal.fire({
+                icon: "{{ session('alert.type') }}",
+                title: "{{ session('alert.title') }}",
+                text: "{{ session('alert.message') }}"
+            });
+        </script>
+    @endif
 
 
     <x-slot name="header">
@@ -171,13 +180,13 @@
                 </div>
                 <div class="flex-fill stat-pill text-center p-3 border rounded" style="min-width: 200px;">
                     <div class="text-muted" style="font-size: 12px; font-weight: 600;">DISETUJUI (Bln Ini)</div>
-                    <div class="fw-bolder mt-1 text-success" style="font-size: 24px;">
+                    <div class="fw-bolder mt-1 text-dark" style="font-size: 24px;">
                         {{ $cuti->where('status', 'approved')->count() }}
                     </div>
                 </div>
                 <div class="flex-fill stat-pill text-center p-3 border rounded" style="min-width: 200px;">
                     <div class="text-muted" style="font-size: 12px; font-weight: 600;">DITOLAK</div>
-                    <div class="fw-bolder mt-1 text-danger" style="font-size: 24px;">
+                    <div class="fw-bolder mt-1 text-dark" style="font-size: 24px;">
                         {{ $cuti->where('status', 'rejected')->count() }}
                     </div>
                 </div>
@@ -189,7 +198,7 @@
                 </div>
             </div>
         </div>
-{{--
+        {{--
         <form method="GET" action="" class="mb-4">
             <div class="search-app-bar">
                 <i class="fa-solid fa-magnifying-glass text-muted ms-2"></i>
@@ -304,14 +313,27 @@
                             @endif
 
                             @if ($item->status == 'pending')
-                                <button class="btn btn-outline-danger flex-fill btnReject"
-                                    data-id="{{ $item->id }}">
-                                    Tolak
-                                </button>
+                                @php
+                                    $expired = \Carbon\Carbon::today()->gt(
+                                        \Carbon\Carbon::parse($item->tanggal_selesai),
+                                    );
+                                @endphp
 
-                                <button class="btn btn-success flex-fill btnApprove" data-id="{{ $item->id }}">
-                                    Setujui
-                                </button>
+                                @if ($expired)
+                                    <button class="btn btn-secondary w-100" disabled>
+                                        <i class="fa-solid fa-clock me-2"></i>
+                                        Sudah Melewati Tanggal selesai Cuti
+                                    </button>
+                                @else
+                                    <button class="btn btn-outline-danger flex-fill btnReject"
+                                        data-id="{{ $item->id }}">
+                                        Tolak
+                                    </button>
+
+                                    <button class="btn btn-success flex-fill btnApprove" data-id="{{ $item->id }}">
+                                        Setujui
+                                    </button>
+                                @endif
                             @elseif($item->status == 'approved')
                                 <button class="btn btn-success w-100" disabled>
                                     <i class="fa fa-check me-2"></i>

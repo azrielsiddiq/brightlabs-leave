@@ -69,6 +69,14 @@ class PengajuanCutiController extends Controller
             ]);
         }
 
+        if (now()->toDateString() > Carbon::parse($cuti->tanggal_selesai)->toDateString()) {
+            return back()->with('alert', [
+                'type' => 'error',
+                'title' => 'Tidak Dapat Disetujui',
+                'message' => 'Pengajuan cuti sudah melewati tanggal berakhir sehingga tidak dapat disetujui.',
+            ]);
+        }
+
         $request->validate([
             'catatan_hrd' => 'nullable|string|max:500',
         ]);

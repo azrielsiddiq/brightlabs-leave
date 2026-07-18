@@ -66,6 +66,7 @@ Route::middleware(['auth', 'role:manager'])->group(function () {
    Route::get('/manager/dashboard', [PengumumanController::class, 'dashboard'])
     ->name('manager.dashboard');
 
+    Route::get('/manager/dashboard', [PengumumanController::class, 'dashboard'])->name('manager.dashboard');
     Route::get('/manager/user', [UserController::class, 'index'])->name('manager.user');
     Route::post('/manager/user', [UserController::class, 'store'])->name('manager.user.store');
     Route::get('/manager/user/{user}/edit', [UserController::class, 'edit'])->name('manager.user.edit');
